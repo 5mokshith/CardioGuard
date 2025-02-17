@@ -13,18 +13,18 @@
     position: absolute;
     background-color: #18181b;
     background: rgba(255, 255, 255, 0);
-    backdrop-filter: blur(0.4375rem);
-    -webkit-backdrop-filter: blur(0.4375rem);
-    border-radius: 0.625rem;
-    border: 0.0625rem solid rgba(255, 255, 255, 0.18);
-    margin: 8.125rem 25rem;
-    height: 25rem;
-    width: 35.625rem;
-    padding: 1.8125rem 4.75rem;
+    backdrop-filter: blur(0.35rem);
+    -webkit-backdrop-filter: blur(0.35rem);
+    border-radius: 0.5rem;
+    border: 0.05rem solid rgba(255, 255, 255, 0.18);
+    margin: 10.5rem 30rem;
+    height: 20rem;
+    width: 28.5rem;
+    padding: 1.45rem 3.8rem;
 }
 
 .content {
-    font-size: 1.3125rem;
+    font-size: 1.05rem;
     display: grid;
     justify-content: center;
 }
@@ -36,32 +36,32 @@
 
 .content > h2 {
     font-weight: 300;
-    padding: 0.625rem;
+    padding: 0.5rem;
 }
 
 form {
-    border-bottom: 0.0625rem solid #000;
-    height: 3.75rem;
-    width: 37.5rem;
+    border-bottom: 0.05rem solid #000;
+    height: 3rem;
+    width: 30rem;
 }
 
 .content > form > input {
-    font-size: 1.125rem;
-    margin: 1rem;
+    font-size: 0.96rem;
+    margin: 0.8rem;
     text-align: center;
     background: none;
 }
 
 .content > form i {
-    font-size: 1.375rem;
-    padding-left: 1rem;
+    font-size: 1.1rem;
+    padding-left: 0.8rem;
     color: #000;
 }
 
 .content > form p {
-    margin: 0.625rem;
-    font-size: 1rem;
-    padding-left: 0.625rem;
+    margin: 0.5rem;
+    font-size: 0.8rem;
+    padding-left: 0.5rem;
 }
 
 .content > span {
@@ -77,12 +77,12 @@ form {
     background: transparent;
     color: #fff;
     background-color: #000000;
-    width: 26rem;
-    height: 2.4375rem;
+    width: 20.8rem;
+    height: 1.95rem;
     text-align: center;
-    margin-left: 6.25rem;
-    border-radius: 1.6875rem;
-    margin: 3.125rem 5.8125rem;
+    margin-left: 5rem;
+    border-radius: 1.35rem;
+    margin: 2.5rem 4.65rem;
 }
 
 body {
