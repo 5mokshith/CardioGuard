@@ -1,0 +1,9 @@
+body {
+    width: 100%;
+    height: 100vh;
+    background: url(../../public/sign-up.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
