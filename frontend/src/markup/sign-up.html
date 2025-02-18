@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>safe | signup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../CSS/sign-up.css">
+    <link rel="stylesheet" href="../CSS/utils.css">
+    <script type="module" src="../scripts/main.js" defer></script>
+</head>
+<body>
+ <!--  <main>
+    <div class="container">
+        <form method="post" id="sign-up-form">
+            <h2>Sign up</h2>
+            <div class="input-group">
+                <label for="Username">Username</label>
+                <input type="text" name="username" id="Username" placeholder=" " required>
+            </div>
+            <div class="input-group">
+                <label for="email">Enter your email</label>
+                <input type="email" name="email" id="email" placeholder=" " required>
+            </div>
+            <div class="input-group">
+                <label for="password">Enter your Password</label>
+                <input type="password" name="password" id="password" placeholder=" " required>
+            </div>
+            <button type="submit" id="sign-up-btn">Sign up</button>
+            <p>Already have an account? <a href="sign-in.html">Sign in</a></p>
+        </form>
+    </div>
+  </main> -->
+
+  <!-- TODO: add card  like another section for taking patient information
+    and when the submits the signup form succesfully then this section should pop-up -->
+
+   <!--  <template data-personal-info="true">
+        <div class="container-personal-info">
+            <h2>Personal information</h2>
+            <div class="left">
+                <div class="input-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" name="fullName" id="fullName" placeholder=" " required>
+                </div>
+                <div class="input-group">
+                    <label for="gender">Gender</label>
+                    <select name="gender" id="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="height">Height (1cm)</label>
+                    <input type="text" name="height" id="height" placeholder=" " required>
+                </div>
+            </div>
+            <div class="right">
+                <div class="input-group">
+                    <label for="date-of-birth">Date if Birth</label>
+                    <input type="date" name="date-of-birth" id="date-of-birth" required>
+                </div>
+                <div class="input-group">
+                    <label for="blood-type">Select blood type</label>
+                    <select name="blood-type" id="blood-type">
+                        <option value="A-positive">A+</option>
+                        <option value="A-negative">A-</option>
+                        <option value="B-positive">B+</option>
+                        <option value="B-negative">B-</option>
+                        <option value="O-positive">O+</option>
+                        <option value="O-negative">O-</option>
+                        <option value="AB-positive">AB+</option>
+                        <option value="AB-negative">AB-</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="text" name="weight" id="weight" placeholder=" " required>
+                </div>
+            </div>
+            <div class="buttons">
+                <button data-tooltip="previvous" class="tooltip">
+                    <svg viewBox="0 0 448 512" width="20" height="20"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+                </button>
+                <button type="submit" data-tooltip="Submit" class="tooltip">
+                    <svg viewBox="0 0 448 512" width="20" height="20"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
+                </button>
+            </div>
+        </div>
+    </template> -->
+    <template data-medical-conditions-info="true">
+        <div class="container-medical-info">
+            <h1>Medical Conditions</h1>
+            <div class="content">
+                <div class="input-group">
+                    <label for="diabetes">Diabetes</label>
+                    <input type="checkbox" name="diabetes" id="diabetes">
+                </div>
+                <div class="input-group">
+                    <label for="Heart-diseases"> Heart diseases</label>
+                    <input type="checkbox" name="Heart-diseases" id="Heart-diseases">
+                </div>
+                <div class="input-group">
+                    <label for="Allergies"> Allergies</label>
+                    <input type="checkbox" name="Allergies" id="Allergies">
+                </div>
+                 <div class="input-group">
+                    <label for="Hypertension"> Hypertension</label>
+                    <input type="checkbox" name="Hypertension" id="Hypertension">
+                </div>
+                 <div class="input-group">
+                    <label for="asthama"> asthama</label>
+                    <input type="checkbox" name="asthama" id="asthama">
+                </div> 
+                <div class="input-group">
+                    <label for="others"> others</label>
+                    <input type="checkbox" name="others" id="others">
+                </div> 
+            </div>
+        </template>
+    
+</body>
+<script>
+document.querySelectorAll(".input-group input").forEach((input) => {
+    input.addEventListener("focus", function () {
+        let label = this.previousElementSibling;
+        label.style.transform = "translateY(-0.4rem)";
+        label.style.fontSize = "0.9rem";
+        label.style.color = "rgb(220, 220, 220)";
+    });
+
+    input.addEventListener("blur", function () {
+        let label = this.previousElementSibling;
+        if (this.value.trim() === "") {
+            label.style.transform = "translateY(1rem)";
+            label.style.fontSize = "1rem";
+            label.style.color = "white";
+        }
+    });
+});
+
+let node = document.querySelector("template[data-personal-info='true']").content.cloneNode(true);
+document.body.appendChild(node);
+</script>
+</html>
