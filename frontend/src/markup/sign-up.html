@@ -92,6 +92,7 @@
             </div>
         </div>
     </template> -->
+
     <template data-medical-conditions-info="true">
         <div class="container-medical-info">
             <h1>Medical Conditions</h1>
@@ -121,6 +122,7 @@
                     <input type="checkbox" name="others" id="others">
                 </div> 
             </div>
+            </div>
         </template>
     
 </body>
@@ -143,7 +145,7 @@ document.querySelectorAll(".input-group input").forEach((input) => {
     });
 });
 
-let node = document.querySelector("template[data-personal-info='true']").content.cloneNode(true);
+let node = document.querySelector("template[data-medical-conditions-info='true']").content.cloneNode(true);
 document.body.appendChild(node);
 </script>
 </html>

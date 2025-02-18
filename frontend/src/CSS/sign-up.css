@@ -59,7 +59,8 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
-input {
+.container input,
+.container-personal-info input {
     all: unset;
     color: rgb(238, 235, 235);
     padding: 0.5rem;
@@ -216,4 +217,19 @@ body {
 .container-personal-info .buttons button:active {
     cursor: pointer;
     transform: scale(0.88);
+}
+
+/* Avinash styling */
+
+.container-medical-info {
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--card-foreground);
+}
+
+.container-medical-info input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.5rem;
+    accent-color: var(--primary-color);
 }
