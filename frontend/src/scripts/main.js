@@ -5,12 +5,12 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-let signUpBtn = document.querySelector('main .container form button[type="submit"]');
-console.log(signUpBtn);
+let signUpBtn = document.querySelector('main .container form #sign-up-btn');
+let signInBtn = document.querySelector("main .container form #sign-in-btn");
 
 async function signUpUser(event) {
     event.preventDefault();
-    
+
     let formData = new FormData(document.getElementById('sign-up-form'));
     let email = formData.get('email');
     let password = formData.get('password');
@@ -39,12 +39,10 @@ async function signUpUser(event) {
             userName: userName
         }
     ]);
-
     if (insertError) {
         console.error('Error inserting user:', insertError);
         return;
     }
-
     console.log('User inserted successfully');
 }
 
@@ -53,15 +51,29 @@ async function userSignIn(email, password) {
         email: email,
         password: password
     });
-
     if (error) {
         console.error('Error signing in:', error);
         return null;
     }
-
     console.log('User signed in:', data.user);
     return data;  
 }
+
 if (signUpBtn) {
     signUpBtn.addEventListener('click', signUpUser);
+}
+console.log(signInBtn);
+
+if (signInBtn) {
+    signInBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        let formData = new FormData(document.getElementById("sign-in-form"));
+        let email = formData.get("email");
+        let password = formData.get("password");
+        console.log("Signing in user with email:", email);
+        let session = userSignIn(email, password);
+        if (session) {
+            window.location.replace("/index.html");
+        }
+    });
 }
