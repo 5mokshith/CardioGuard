@@ -114,3 +114,5 @@ input:-webkit-autofill:active {
     color: black !important; /* Ensures text remains visible */
     transition: background-color 5000s ease-in-out 0s !important; /* Prevent sudden autofill color flash */
 }
+
+/* Hey buddy, don't change the styles from up add new styles to bottom */
