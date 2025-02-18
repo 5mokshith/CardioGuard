@@ -6,3 +6,8 @@
   font-family: "Noto Sans", serif;
   text-decoration: none;
 }
+
+:root {
+  --card-bg: #efefef;
+  --card-foreground: white;
+}

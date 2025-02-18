@@ -12,7 +12,7 @@
     <script type="module" src="../scripts/main.js" defer></script>
 </head>
 <body>
-  <main>
+ <!--  <main>
     <div class="container">
         <form method="post" id="sign-up-form">
             <h2>Sign up</h2>
@@ -32,10 +32,67 @@
             <p>Already have an account? <a href="sign-in.html">Sign in</a></p>
         </form>
     </div>
-  </main>
+  </main> -->
 
   <!-- TODO: add card  like another section for taking patient information
     and when the submits the signup form succesfully then this section should pop-up -->
+
+    <template data-personal-info="true">
+        <div class="container-personal-info">
+            <h2>Personal information</h2>
+            <div class="left">
+                <div class="input-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" name="fullName" id="fullName" placeholder=" " required>
+                </div>
+                <div class="input-group">
+                    <label for="gender">Gender</label>
+                    <select name="gender" id="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="height">Height (1cm)</label>
+                    <input type="text" name="height" id="height" placeholder=" " required>
+                </div>
+            </div>
+            <div class="right">
+                <div class="input-group">
+                    <label for="date-of-birth">Date if Birth</label>
+                    <input type="date" name="date-of-birth" id="date-of-birth" required>
+                </div>
+                <div class="input-group">
+                    <label for="blood-type">Select blood type</label>
+                    <select name="blood-type" id="blood-type">
+                        <option value="A-positive">A+</option>
+                        <option value="A-negative">A-</option>
+                        <option value="B-positive">B+</option>
+                        <option value="B-negative">B-</option>
+                        <option value="O-positive">O+</option>
+                        <option value="O-negative">O-</option>
+                        <option value="AB-positive">AB+</option>
+                        <option value="AB-negative">AB-</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="text" name="weight" id="weight" placeholder=" " required>
+                </div>
+            </div>
+            <div class="buttons">
+                <button>
+                    Prev
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+                </button>
+                <button type="submit">
+                    Submit
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
+                </button>
+            </div>
+        </div>
+    </template>
 </body>
 <script>
 document.querySelectorAll(".input-group input").forEach((input) => {
@@ -56,5 +113,7 @@ document.querySelectorAll(".input-group input").forEach((input) => {
     });
 });
 
+let node = document.querySelector("template[data-personal-info='true']").content.cloneNode(true);
+document.body.appendChild(node);
 </script>
 </html>

@@ -116,3 +116,83 @@ input:-webkit-autofill:active {
 }
 
 /* Hey buddy, don't change the styles from up add new styles to bottom */
+
+.container-personal-info {
+    width: fit-content;
+    height: fit-content;
+    min-height: 26rem;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--card-foreground);
+    position: relative;
+}
+body {
+    background: var(--card-bg);
+}
+.container-personal-info input {
+    width: 100%;
+    min-width: 22rem;
+    font-size: 1.35rem;
+    border-bottom: 3px solid black;
+    background: transparent;
+    outline: none;
+    color: black;
+}
+
+.container-personal-info > h2 {
+    position: absolute;
+}
+.container-personal-info > label {
+    color: black;
+    font-size: 1.2rem;
+    margin: 0.5rem;
+}
+.container-personal-info > .left,
+.container-personal-info > .right {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 1rem;
+    margin-block-start: 3rem;
+}
+
+.container-personal-info .input-group {
+    margin: 0.8rem;
+}
+
+.container-personal-info > .left select,
+.container-personal-info > .right select {
+    height: 3.5rem;
+    width: 100%;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    background-color: var(--card-bg);
+    border: none;
+    border-radius: 1rem;
+}
+
+.container-personal-info .buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    left: 90%;
+    bottom: 1rem;
+    margin-block-start: 1rem;
+}
+
+.container-personal-info .buttons button {
+    background: transparent;
+    color: black;
+    border: none;
+    outline: none;
+    height: 2.6rem;
+    font-size: 0.8rem;
+    transition: all 100ms ease-in-out;
+}
