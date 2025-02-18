@@ -38,7 +38,7 @@
   <!-- TODO: add card  like another section for taking patient information
     and when the submits the signup form succesfully then this section should pop-up -->
 
-   <!--  <template data-personal-info="true">
+    <template data-personal-info="true">
         <div class="container-personal-info">
             <h2>Personal information</h2>
             <div class="left">
@@ -91,7 +91,7 @@
                 </button>
             </div>
         </div>
-    </template> -->
+    </template>
     <template data-medical-conditions-info="true">
         <div class="container-medical-info">
             <h1>Medical Conditions</h1>
@@ -143,7 +143,10 @@ document.querySelectorAll(".input-group input").forEach((input) => {
     });
 });
 
-let node = document.querySelector("template[data-personal-info='true']").content.cloneNode(true);
-document.body.appendChild(node);
+// let node = document.querySelector("template[data-personal-info='true']").content.cloneNode(true);
+// document.body.appendChild(node);
+
+let node2 = document.querySelector("template[data-medical-conditions-info='true']").content.cloneNode(true);    
+document.body.appendChild(node2);
 </script>
 </html>
