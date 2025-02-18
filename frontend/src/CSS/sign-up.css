@@ -311,10 +311,6 @@ input:-webkit-autofill:active {
 }
 
 /* Styles for lifestyle section */
-.container-lifestyle-info {
-    width: 60%;
-}
-
 .container-lifestyle-info .wrapper {
     width: 100%;
     border: 1px solid grey;
@@ -345,4 +341,111 @@ input:-webkit-autofill:active {
     align-items: center;
     gap: 1rem;
     margin: 0.6rem;
+}
+
+/* Emergency info */
+
+.emergency-relationship-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--card-foreground);
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+  }
+  
+  .emergency-relationship-info .emergency-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background: transparent;
+    padding: 0.5rem;
+    width: 32rem;
+    border-radius: 0.5rem;
+  }
+  
+  .emergency-relationship-info .emergency-items label {
+    font-size: 1.2rem;
+    text-align: left;
+    color: black;
+  }
+  
+  .emergency-relationship-info .emergency-items div {
+    display: flex;
+    align-items: center; 
+    gap: 1rem; 
+  }
+  
+  .emergency-relationship-info .emergency-items svg {
+    width: 1.3rem;
+    height: 1.3rem;
+    fill: black;
+  }
+  
+  .emergency-relationship-info .emergency-items input,
+  .emergency-relationship-info .emergency-items select {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    border: 0.2rem solid #ccc;
+    background: transparent;
+    outline: none;
+  }
+  
+  .emergency-relationship-info .emergency-items input::placeholder {
+    color: #999;
+  }
+  
+  .emergency-relationship-info .emergency-items select {
+    cursor: pointer;
+  }
+  
+  .emergency-relationship-info .emergency-items select option {
+    color: black;
+    background: white;
+  }
+
+.emergency-relationship-info .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.emergency-relationship-info .buttons button {
+    background: white;
+    border: none;
+    outline: none;
+    height: 2.6rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 100ms ease-in-out;
+}
+
+.emergency-relationship-info .buttons button[type="submit"] {
+    background-color: green;
+    color: white;
+}
+.emergency-relationship-info .buttons button[type="submit"]:hover {
+    background-color: darkgreen;
+}
+
+.emergency-relationship-info .buttons button[type="submit"]:active {
+    background-color: green;
+    transform: scale(0.98);
+}
+.emergency-relationship-info .buttons button:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.emergency-relationship-info .buttons button:active {
+    background: white;
+    transform: scale(0.98);
 }
