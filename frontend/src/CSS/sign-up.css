@@ -180,19 +180,40 @@ body {
 
 .container-personal-info .buttons {
     display: flex;
-    gap: 1rem;
     justify-content: center;
+    align-items: flex-end;
+    gap: 1rem;
     left: 90%;
     bottom: 1rem;
-    margin-block-start: 1rem;
+    margin-block-start: 25rem;
 }
 
 .container-personal-info .buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     color: black;
     border: none;
     outline: none;
     height: 2.6rem;
+    padding: 1rem;
+    border-radius: 1rem;
     font-size: 0.8rem;
     transition: all 100ms ease-in-out;
+}
+
+.container-personal-info .buttons button > svg {
+    margin-inline-end: 0.5rem;
+    color: aqua;
+}
+
+.container-personal-info .buttons button:hover {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.container-personal-info .buttons button:active {
+    cursor: pointer;
+    transform: scale(0.88);
 }
