@@ -129,9 +129,9 @@ input:-webkit-autofill:active {
     background: var(--card-foreground);
     position: relative;
 }
-body {
+/* body {
     background: var(--card-bg);
-}
+} */
 .container-personal-info input {
     width: 100%;
     min-width: 22rem;
@@ -184,7 +184,8 @@ body {
 }
 
 .container-personal-info .buttons,
-.container-medical-info .buttons {
+.container-medical-info .buttons,
+.container-lifestyle-info .buttons {
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -194,7 +195,8 @@ body {
 }
 
 .container-personal-info .buttons button,
-.container-medical-info .buttons button {
+.container-medical-info .buttons button,
+.container-lifestyle-info .buttons button{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -215,19 +217,22 @@ body {
 }
 
 .container-personal-info .buttons button:hover,
-.container-medical-info .buttons button:hover {
+.container-medical-info .buttons button:hover,
+.container-lifestyle-info .buttons button:hover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.1);
 }
 
 .container-personal-info .buttons button:active,
-.container-medical-info .buttons button:active {
+.container-medical-info .buttons button:active,
+.container-lifestyle-info .buttons button:active {
     cursor: pointer;
     transform: scale(0.88);
 }
 
 /* Avinash styling */
-.container-medical-info {
+.container-medical-info,
+.container-lifestyle-info {
     display: flex;
     flex-direction: column;
     height: fit-content;
@@ -303,4 +308,41 @@ body {
     font-size: 1.2rem;
     padding: 0.5rem;
     border-radius: 0.3rem;
+}
+
+/* Styles for lifestyle section */
+.container-lifestyle-info {
+    width: 60%;
+}
+
+.container-lifestyle-info .wrapper {
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.container-lifestyle-info .wrapper:hover {
+    border: none;
+    border-color: black;
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.container-lifestyle-info .wrapper:active {
+    border-color: black;
+    background-color: rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease-in-out;
+}
+.container-lifestyle-info .input-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.6rem;
 }
