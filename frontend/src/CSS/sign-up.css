@@ -218,7 +218,22 @@ body {
     cursor: pointer;
     transform: scale(0.88);
 }
-/* avinash styles  */
-.container-medical-info{
-    
+
+/* Avinash styling */
+
+.container-medical-info {
+     width: fit-content;
+    height: fit-content;
+    min-height: 26rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--card-foreground);
+}
+
+.container-medical-info input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.5rem;
+    accent-color: var(--primary-color);
+    font-size: 1.5rem;
 }
