@@ -1,14 +1,181 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <link rel="stylesheet" href="src/style.css">
   </head>
   <body>
-    <a href="src/markup/sign-up.html">sign-up</a>
-    <h1>Hello</h1>
+    <div class="header">
+      <h1>Health Dashboard</h1>
+      <div class="user-info" id="userProfile">
+        <div class="user-avatar">🌚</div>
+        <span>John Cena</span>
+      </div>
+    </div>
+
+    
+    </div>
+
+    <div class="grids">
+      <div class="dashboard-grid">
+        <div class="metric-card">
+          <div class="metric-title">Heart Rate</div>
+          <div class="metric-value"><span id="heartRate">75</span> BPM</div>
+          <div class="status">Normal</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">SpO2</div>
+          <div class="metric-value"><span id="spo2">98</span>%</div>
+          <div class="status">Normal</div>
+        </div>
+      </div>
+      <div class="charts-grid">
+        <div
+          class="chart-card"
+          id="ecgChart"
+          style="width: 100%; height: 300px"
+        ></div>
+        <div
+          class="chart-card"
+          id="spo2Chart"
+          style="width: 100%; height: 300px"
+        ></div>
+      </div>
+    </div>
+
+    <div
+      class="history"
+      style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px"
+    >
+      <div class="history-card">
+        <h3>History Log</h3>
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Heart Rate</th>
+              <th>SpO2</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="right-column">
+        <div class="card">
+          <button class="btn emergency-btn emergency-services">
+            Emergency Services
+          </button>
+          <button class="btn emergency-btn call-doctor">Call Doctor</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize ECG Chart
+      var ecgChart = echarts.init(document.getElementById("ecgChart"));
+      var ecgData = [];
+      for (var i = 0; i < 50; i++) {
+        ecgData.push([i, Math.sin(i / 5) * 10 + Math.random() * 2]);
+      }
+      var ecgOption = {
+        title: { text: "ECG Waveform" },
+        xAxis: { type: "category" },
+        yAxis: { type: "value" },
+        series: [{ type: "line", data: ecgData }],
+      };
+      ecgChart.setOption(ecgOption);
+
+      // Initialize SpO2 Chart
+      var spo2Chart = echarts.init(document.getElementById("spo2Chart"));
+      var spo2Data = [];
+      for (var i = 0; i < 50; i++) {
+        spo2Data.push([i, 95 + Math.random() * 3]);
+      }
+      var spo2Option = {
+        title: { text: "SpO2 Levels" },
+        xAxis: { type: "category" },
+        yAxis: { type: "value" },
+        series: [{ type: "line", data: spo2Data }],
+      };
+      spo2Chart.setOption(spo2Option);
+
+      // Populate history log with sample data
+      document.addEventListener("DOMContentLoaded", function () {
+        var sampleHistory = [
+          {
+            timestamp: "2025-02-19 10:00",
+            heartRate: 75,
+            spo2: 98,
+            status: "Normal",
+          },
+          {
+            timestamp: "2025-02-19 10:05",
+            heartRate: 80,
+            spo2: 97,
+            status: "Normal",
+          },
+          {
+            timestamp: "2025-02-19 10:10",
+            heartRate: 72,
+            spo2: 99,
+            status: "Normal",
+          },
+          {
+            timestamp: "2025-02-19 10:15",
+            heartRate: 85,
+            spo2: 96,
+            status: "Elevated",
+          },
+        ];
+        const table = document.querySelector(".history-table");
+        sampleHistory.forEach((entry) => {
+          console.log(entry.heartRate);
+          var row = document.createElement("tr");
+          row.innerHTML = `
+                <td>${entry.timestamp}</td>
+                <td>${entry.heartRate}</td>
+                <td>${entry.spo2}</td>
+                <td>${entry.status}</td>
+            `;
+          historyTableBody.appendChild(row);
+        });
+      });
+
+
+      // Open user profile form
+const userProfile = document.getElementById('userProfile');
+const profileInfo = document.createElement('div');
+
+profileInfo.className = 'expanded-profile hidden';
+profileInfo.innerHTML = `
+    <div class="profile-details">
+        <p><strong>Name:</strong> John Cena</p>
+        <p><strong>Age:</strong> 46</p>
+        <p><strong>Blood Group:</strong> O+</p>
+        <p><strong>Medical History:</strong> No major issues</p>
+    </div>
+`;
+
+userProfile.appendChild(profileInfo);
+
+userProfile.addEventListener('click', function(e) {
+    e.stopPropagation();
+    profileInfo.classList.toggle('hidden');
+});
+
+document.addEventListener('click', function(e) {
+    if (!userProfile.contains(e.target)) {
+        profileInfo.classList.add('hidden');
+    }
+});
+    </script>
   </body>
 </html>

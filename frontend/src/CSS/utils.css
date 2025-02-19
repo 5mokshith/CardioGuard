@@ -25,3 +25,64 @@
     opacity: 1;
     pointer-events: auto;
 }
+
+
+.toggle-box {
+    margin-right: 10px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 20px;
+    background: #c0c0c0;
+    /* #EFEFEF */
+    border-radius: 10px;
+    transition: all 0.2s;
+    bottom: -5px;
+  }
+  
+  .toggle-box i {
+    width: 15px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    left: 15%;
+    transition: all 0.2s ease;
+  }
+
+  /* Transistion */
+
+/* Fade out effect for main container */
+.fade-out {
+    animation: fadeOut 500ms forwards linear;
+}
+
+/* Fade in effect for the new step */
+.fade-in {
+    animation: fadeIn 500ms forwards linear;
+}
+
+.input-error {
+  border: 2px solid red;
+}
+
+@keyframes fadeOut {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 0;
+  }
+}
+
+@keyframes fadeIn {
+    from {
+      scale: 0;
+    }
+    to {
+      scale: 1;
+    }
+  }

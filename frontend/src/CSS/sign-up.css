@@ -129,9 +129,9 @@ input:-webkit-autofill:active {
     background: var(--card-foreground);
     position: relative;
 }
-body {
+/* body {
     background: var(--card-bg);
-}
+} */
 .container-personal-info input {
     width: 100%;
     min-width: 22rem;
@@ -180,16 +180,23 @@ body {
 }
 
 .container-personal-info .buttons {
+    margin-block-start: 25rem;
+}
+
+.container-personal-info .buttons,
+.container-medical-info .buttons,
+.container-lifestyle-info .buttons {
     display: flex;
     justify-content: center;
     align-items: flex-end;
     gap: 1rem;
     left: 90%;
     bottom: 1rem;
-    margin-block-start: 25rem;
 }
 
-.container-personal-info .buttons button {
+.container-personal-info .buttons button,
+.container-medical-info .buttons button,
+.container-lifestyle-info .buttons button{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -204,23 +211,28 @@ body {
     transition: all 100ms ease-in-out;
 }
 
-.container-personal-info .buttons button > svg {
+.container-personal-info .buttons button > svg,
+.container-medical-info .buttons button > svg {
     margin-inline-end: 0.5rem;
-    color: aqua;
 }
 
-.container-personal-info .buttons button:hover {
+.container-personal-info .buttons button:hover,
+.container-medical-info .buttons button:hover,
+.container-lifestyle-info .buttons button:hover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.1);
 }
 
-.container-personal-info .buttons button:active {
+.container-personal-info .buttons button:active,
+.container-medical-info .buttons button:active,
+.container-lifestyle-info .buttons button:active {
     cursor: pointer;
     transform: scale(0.88);
 }
 
 /* Avinash styling */
-.container-medical-info {
+.container-medical-info,
+.container-lifestyle-info {
     display: flex;
     flex-direction: column;
     height: fit-content;
@@ -234,33 +246,27 @@ body {
 }
 
 .container-medical-info input {
-    width: 20px;
-    height: 20px;
+    width: 1.1rem;
+    height: 1.1rem;
     background: transparent;
     outline: none;
     cursor: pointer;
-}
-
-.container-medical-info > h2 {
-    position: absolute;
 }
 
 .container-medical-info .content {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Three columns */
     gap: 5.5rem;
-    
 }
 
 .container-medical-info .input-group {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin: 10px;
+    margin: 0.6rem;
 }
 
 .container-medical-info .input-group label {
-    width: 150px; /* Fixed width for alignment */
     text-align: left;
     font-size: 1.2rem;
     color: black;
@@ -281,7 +287,7 @@ body {
     transition: all 100ms ease-in-out;
 }
 
-.container-medical-info > .others> label{
+.container-medical-info > .others> label {
     font-size: 1.2rem;
     margin: 0.5rem;
 }
@@ -295,6 +301,147 @@ body {
 .container-medical-info > .others > textarea{
     width: 100%;
     resize: none;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    padding: 0.5rem;
     border-radius: 0.3rem;
+}
+
+/* Styles for lifestyle section */
+.container-lifestyle-info .wrapper {
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.container-lifestyle-info .wrapper:hover {
+    border: none;
+    border-color: black;
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.container-lifestyle-info .wrapper:active {
+    border-color: black;
+    background-color: rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease-in-out;
+}
+.container-lifestyle-info .input-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.6rem;
+}
+
+/* Emergency info */
+
+.emergency-relationship-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--card-foreground);
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+  }
+  
+  .emergency-relationship-info .emergency-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background: transparent;
+    padding: 0.5rem;
+    width: 32rem;
+    border-radius: 0.5rem;
+  }
+  
+  .emergency-relationship-info .emergency-items label {
+    font-size: 1.2rem;
+    text-align: left;
+    color: black;
+  }
+  
+  .emergency-relationship-info .emergency-items div {
+    display: flex;
+    align-items: center; 
+    gap: 1rem; 
+  }
+  
+  .emergency-relationship-info .emergency-items svg {
+    width: 1.3rem;
+    height: 1.3rem;
+    fill: black;
+  }
+  
+  .emergency-relationship-info .emergency-items input,
+  .emergency-relationship-info .emergency-items select {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    border: 0.2rem solid #ccc;
+    background: transparent;
+    outline: none;
+  }
+  
+  .emergency-relationship-info .emergency-items input::placeholder {
+    color: #999;
+  }
+  
+  .emergency-relationship-info .emergency-items select {
+    cursor: pointer;
+  }
+  
+  .emergency-relationship-info .emergency-items select option {
+    color: black;
+    background: white;
+  }
+
+.emergency-relationship-info .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.emergency-relationship-info .buttons button {
+    background: white;
+    border: none;
+    outline: none;
+    height: 2.6rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 100ms ease-in-out;
+}
+
+.emergency-relationship-info .buttons button[type="submit"] {
+    background-color: green;
+    color: white;
+}
+.emergency-relationship-info .buttons button[type="submit"]:hover {
+    background-color: darkgreen;
+}
+
+.emergency-relationship-info .buttons button[type="submit"]:active {
+    background-color: green;
+    transform: scale(0.98);
+}
+.emergency-relationship-info .buttons button:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.emergency-relationship-info .buttons button:active {
+    background: white;
+    transform: scale(0.98);
 }
