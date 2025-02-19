@@ -10,6 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    transition: all 200ms ease;
 }
 
 .container {

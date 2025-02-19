@@ -62,17 +62,49 @@ let collectedData = {
   lifestyleInfo: {},
   emergencyContacts: []
 };
+function updateProgressBar() {
+  const progressBar = document.querySelector('.progress-bar');
+  const steps = document.querySelectorAll('.step');
+  const progressWidth = ((currentStepIndex + 1) / steps.length) * 100;
+  
+  if (progressBar) {
+    progressBar.style.width = `${progressWidth}%`;
+  }
+  
+  steps.forEach((step, index) => {
+    if (index <= currentStepIndex) {
+      step.classList.add('active');
+    } else {
+      step.classList.remove('active');
+    }
+  });
+}
 
 function transitionToMultiStep() {
-  const mainContainer = document.querySelector("main");
+  const mainContainer = document.querySelector('main');
   if (mainContainer) {
-    mainContainer.classList.add("fade-out");
+    mainContainer.classList.add('fade-out');
     setTimeout(() => {
-      mainContainer.style.display = "none";
-      multiStepContainer = document.createElement("div");
-      multiStepContainer.id = "multi-step-container";
+      mainContainer.style.display = 'none';
+      multiStepContainer = document.createElement('div');
+      multiStepContainer.id = 'multi-step-container';
       document.body.appendChild(multiStepContainer);
+      
+      // Add progress bar
+      const progressHTML = `
+        <div class="progress-container">
+          <div class="progress-bar"></div>
+          <div class="steps">
+            ${steps.map((_, i) => `
+              <div class="step ${i === 0 ? 'active' : ''}">${i + 1}</div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      multiStepContainer.innerHTML = progressHTML;
+      
       loadStep(currentStepIndex);
+      updateProgressBar();
     }, 500);
   }
 }
@@ -126,13 +158,14 @@ function attachStepEventListeners() {
 }
 
 function transitionStep(newIndex) {
-  multiStepContainer.classList.add("fade-out");
+  multiStepContainer.classList.add('fade-out');
   setTimeout(() => {
     loadStep(newIndex);
-    multiStepContainer.classList.remove("fade-out");
-    multiStepContainer.classList.add("fade-in");
+    updateProgressBar();
+    multiStepContainer.classList.remove('fade-out');
+    multiStepContainer.classList.add('fade-in');
     setTimeout(() => {
-      multiStepContainer.classList.remove("fade-in");
+      multiStepContainer.classList.remove('fade-in');
     }, 500);
   }, 500);
 }
