@@ -1,3 +1,17 @@
+:root {
+  --card-bg: #efefef;
+  --card-foreground: white;
+  --background-dark: #0a0a0a;
+  --card-bg: rgba(32, 32, 32, 0.7);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --accent-blue: #007bff;
+  --accent-red: #dc3545;
+  --accent-green: #28a745;
+  --glass-blur: 1rem;
+  --transition-speed: 0.3s;
+}
+
 *,*::before,
 *::after {
   margin: 0;
@@ -7,7 +21,254 @@
   text-decoration: none;
 }
 
-:root {
-  --card-bg: #efefef;
-  --card-foreground: white;
+body {
+  background-color: var(--background-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 1.25rem;
+}
+  
+/* Overlay effect */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.modal-overlay.show {
+  display: block;
+}
+/* model styles from here */
+/* Expanding Profile Styles */
+.user-info {
+    position: relative;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color var(--transition-speed);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-info:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.expanded-profile {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    min-width: 250px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.expanded-profile.hidden {
+    display: none;
+}
+
+.profile-details p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* Header Styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+}
+
+.header > h1 {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.header > .user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header > .user-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(var(--glass-blur));
+  text-align: center;
+  justify-content: center;
+}
+
+/* Metric Cards */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.metric-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: 1rem;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-title {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.status {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  display: inline-block;
+}
+
+.status.normal {
+  background: rgba(40, 167, 69, 0.2);
+  color: var(--accent-green);
+}
+
+.status.warning {
+  background: rgba(220, 53, 69, 0.2);
+  color: var(--accent-red);
+}
+
+/* Chart Cards */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  margin-bottom: 1.5rem;
+  gap: 1.3rem;
+}
+
+.chart-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: 1rem;
+  padding: 1.25rem;
+  height: 18.75rem;
+}
+
+/* History Card */
+.history > .history-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.history > .history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th,
+.history-table tbody td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.history > .history-table th {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.emergency-btn {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.emergency-services {
+  background: rgba(220, 53, 69, 0.2);
+  color: var(--accent-red);
+}
+
+.call-doctor {
+  background: rgba(0, 123, 255, 0.2);
+  color: var(--accent-blue);
+}
+
+.emergency-btn:hover {
+  transform: translateY(-0.125rem);
+  opacity: 0.9;
+}
+
+.form-control {
+  margin-bottom: 1rem;
+}
+
+.form-control > label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.form-control > input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.form-control > input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+.submit-btn {
+  background: rgba(40, 167, 69, 0.2);
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  background: rgba(40, 167, 69, 0.2);
+  color: var(--accent-green);
+}
+
+.status-badge > .warning {
+  background: rgba(220, 53, 69, 0.2);
+  color: var(--accent-red);
 }
