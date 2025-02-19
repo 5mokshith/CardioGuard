@@ -253,10 +253,6 @@ input:-webkit-autofill:active {
     cursor: pointer;
 }
 
-.container-medical-info > h2 {
-    position: absolute;
-}
-
 .container-medical-info .content {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Three columns */

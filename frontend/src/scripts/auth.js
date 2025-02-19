@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function signUpUser(email, password, userName) {
     const { data, error } = await supabase.auth.signUp({
@@ -24,11 +24,11 @@ export async function signUpUser(email, password, userName) {
     }
 
     let userId = session.user.id;
-    const { error: insertError } = await supabase.from('Users').insert([
+    const { error: insertError } = await supabase.from('users').insert([
         {
             id: userId,
             email: email,
-            userName: userName
+            name: userName
         }
     ]);
 
