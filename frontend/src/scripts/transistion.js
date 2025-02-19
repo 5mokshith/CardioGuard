@@ -1,4 +1,3 @@
-// transistion.js
 import { signUpUser, userSignIn, supabase } from './auth.js';
 import { insertUserData } from './sendUserData.js';
 
@@ -155,37 +154,51 @@ function validateCurrentStep(container) {
 
 function storeStepData() {
   const stepData = steps[currentStepIndex];
-  const formElements = multiStepContainer.querySelectorAll("input, select, textarea");
-  let dataObj = {};
-  formElements.forEach((el) => {
-    if (el.type === "checkbox") {
-      dataObj[el.name] = el.checked;
-    } else {
-      dataObj[el.name] = el.value;
-    }
-  });
 
-  if (stepData.attr === "data-personal-info") {
-    if (dataObj.hasOwnProperty("name")) {
-      delete dataObj.name;
-    }
-    collectedData.personalInfo = dataObj;
-  } else if (stepData.attr === "data-medical-conditions-info") {
-    collectedData.medicalInfo = dataObj;
-  } else if (stepData.attr === "data-lifestyle-info") {
-    collectedData.lifestyleInfo = dataObj;
-  } else if (stepData.attr === "data-emergency-info") {
-    // Map emergency info fields to match the database schema
-    collectedData.emergencyContacts = [{
-      name: dataObj.emergency_full_name,
-      phone: dataObj.emergency_phone,
-      relationship: dataObj.relationship
-      // Optionally, add email or is_primary if needed
-    }];
+  if (stepData.attr === "data-emergency-info") {
+    // Clear previous emergency contacts in case of re-entry
+    collectedData.emergencyContacts = [];
+
+    // Get each emergency contact block
+    const contactBlocks = multiStepContainer.querySelectorAll('.emergency-contact-block');
+    contactBlocks.forEach(block => {
+      const newContact = {
+        name: block.querySelector('input[name="emergency_full_name"]').value,
+        phone: block.querySelector('input[name="emergency_phone"]').value,
+        relationship: block.querySelector('select[name="relationship"]').value,
+        email: block.querySelector('input[name="emergency_email"]') 
+                ? block.querySelector('input[name="emergency_email"]').value 
+                : ""
+      };
+      collectedData.emergencyContacts.push(newContact);
+    });
   } else {
-    console.warn("Unrecognized step:", stepData.attr);
+    // For other steps, collect data as before:
+    const formElements = multiStepContainer.querySelectorAll("input, select, textarea");
+    let dataObj = {};
+    formElements.forEach((el) => {
+      if (el.type === "checkbox") {
+        dataObj[el.name] = el.checked;
+      } else {
+        dataObj[el.name] = el.value;
+      }
+    });
+
+    if (stepData.attr === "data-personal-info") {
+      if (dataObj.hasOwnProperty("name")) {
+        delete dataObj.name;
+      }
+      collectedData.personalInfo = dataObj;
+    } else if (stepData.attr === "data-medical-conditions-info") {
+      collectedData.medicalInfo = dataObj;
+    } else if (stepData.attr === "data-lifestyle-info") {
+      collectedData.lifestyleInfo = dataObj;
+    } else {
+      console.warn("Unrecognized step:", stepData.attr);
+    }
   }
 }
+
 
 function preloadStepData(stepAttr) {
   let dataObj;
@@ -233,3 +246,20 @@ async function submitAllData() {
     alert("Error: " + response.message);
   }
 }
+
+/* Function to add more emergency contacts */
+document.addEventListener("click", (e) => {
+  if (e.target && e.target.id === "add_more_contacts") {
+    e.preventDefault();
+    // Find the first contact block as a template
+    const templateBlock = multiStepContainer.querySelector('.emergency-contact-block');
+    if (templateBlock) {
+      // Clone the block and clear its input values
+      const clone = templateBlock.cloneNode(true);
+      clone.querySelectorAll("input").forEach(input => input.value = "");
+      clone.querySelector("select").selectedIndex = 0;
+      // Append the clone to the container for additional contacts
+      document.querySelector("#additional-contacts").appendChild(clone);
+    }
+  }
+});

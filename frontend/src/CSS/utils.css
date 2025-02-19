@@ -52,37 +52,92 @@
     left: 15%;
     transition: all 0.2s ease;
   }
+/* Add to your CSS file */
+.progress-container {
+  position: relative;
+  width: 80%;
+  margin: 2rem auto 3rem;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+}
 
+.progress-bar {
+  position: absolute;
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.5s ease;
+  border-radius: 2px;
+}
+
+.steps {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  top: -14px;
+}
+
+.step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.step.active {
+  background-color: #4CAF50;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
   /* Transistion */
 
-/* Fade out effect for main container */
+/* Fade-out effect for main container */
 .fade-out {
-    animation: fadeOut 500ms forwards linear;
+  animation: fadeOut 500ms ease-in-out forwards;
 }
 
-/* Fade in effect for the new step */
+/* Fade-in effect for the new step */
 .fade-in {
-    animation: fadeIn 500ms forwards linear;
+  animation: fadeIn 500ms ease-in-out forwards;
 }
 
+/* Input error styling */
 .input-error {
-  border: 2px solid red;
+  border: 2px solid #ff4d4d;
+  box-shadow: 0 0 8px rgba(255, 77, 77, 0.7);
+  transition: all 0.3s ease-in-out;
 }
 
+/* Smooth fade-out with scaling */
 @keyframes fadeOut {
   from {
-    scale: 1;
+      opacity: 1;
+      transform: scale(1) translateY(0);
   }
   to {
-    scale: 0;
+      opacity: 0;
+      transform: scale(0.8) translateY(-20px);
   }
 }
 
+/* Smooth fade-in with gentle scaling */
 @keyframes fadeIn {
-    from {
-      scale: 0;
-    }
-    to {
-      scale: 1;
-    }
+  0% {
+      opacity: 0;
+      transform: scale(0.85) translateY(30px);
+      filter: blur(5px);
   }
+  100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      filter: blur(0);
+  }
+}
+

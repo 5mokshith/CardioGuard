@@ -1,13 +1,15 @@
 body { 
     width: 100%;
     height: 100vh;
-    background: url(../../public/sign-up.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1)), url(../../public/sign-in.jpg);
     background-size: cover;
+    backdrop-filter: blur(6px);
+    background-position: 50% 50%;
     background-repeat: no-repeat;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .container {
@@ -126,12 +128,13 @@ input:-webkit-autofill:active {
     gap: 1rem;
     padding: 1rem;
     border-radius: 1rem;
-    background: var(--card-foreground);
+    background: var(--card-foreground-main);
     position: relative;
 }
-/* body {
-    background: var(--card-bg);
-} */
+body {
+    /* background: var(--card-bg); */
+    color: black;
+}
 .container-personal-info input {
     width: 100%;
     min-width: 22rem;
@@ -174,7 +177,7 @@ input:-webkit-autofill:active {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    background-color: var(--card-bg);
+    background-color: var(--card-bg-main);
     border: none;
     border-radius: 1rem;
 }
@@ -236,12 +239,13 @@ input:-webkit-autofill:active {
     display: flex;
     flex-direction: column;
     height: fit-content;
-    min-height: 16rem;
+    min-height: 10rem;
+    min-width: 30rem;
     width: fit-content;
     gap: 1rem;
     padding: 1rem;
     border-radius: 1rem;
-    background: var(--card-foreground);
+    background: var(--card-foreground-main);
     position: relative;
 }
 
@@ -347,7 +351,7 @@ input:-webkit-autofill:active {
     gap: 1rem;
     padding: 1rem;
     border-radius: 1rem;
-    background: var(--card-foreground);
+    background: var(--card-foreground-main);
     position: relative;
     width: fit-content;
     height: fit-content;
@@ -372,7 +376,9 @@ input:-webkit-autofill:active {
   .emergency-relationship-info .emergency-items div {
     display: flex;
     align-items: center; 
-    gap: 1rem; 
+    gap: 1rem;
+    padding-left: 0.8rem; 
+    border: 0.2rem solid #ccc;
   }
   
   .emergency-relationship-info .emergency-items svg {
@@ -387,8 +393,8 @@ input:-webkit-autofill:active {
     padding: 0.6rem;
     border-radius: 0.3rem;
     font-size: 1rem;
-    border: 0.2rem solid #ccc;
     background: transparent;
+    border: none;
     outline: none;
   }
   
@@ -404,6 +410,32 @@ input:-webkit-autofill:active {
     color: black;
     background: white;
   }
+
+  .emergency-relationship-info > .input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .emergency-relationship-info > .input-group button {
+    width: 90%;
+    height: 2.5rem;
+    font-size: 1.2rem;
+    color: rgb(62, 62, 216);
+    background-color: transparent;
+    border: 2px dashed rgb(62, 62, 216);
+    transition: all 200ms ease;
+  }
+  .emergency-relationship-info > .input-group button:hover {
+    color: blue;
+    cursor: pointer;
+}
+
+.emergency-relationship-info > .input-group button:active {
+    color: rgb(62, 62, 216);
+    transform: scale(0.98);
+}
 
 .emergency-relationship-info .buttons {
     display: flex;

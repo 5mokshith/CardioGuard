@@ -5,7 +5,6 @@ import { supabase } from "./auth.js";
 
 async function insertUserData(userId, personalInfo, medicalInfo, lifestyleInfo, emergencyContacts) {
   try {
-
     console.log("Final medicalInfo:", medicalInfo); // Debugging log
 
     // Insert into Personal Info
@@ -27,23 +26,28 @@ async function insertUserData(userId, personalInfo, medicalInfo, lifestyleInfo, 
     if (lifestyleError) throw lifestyleError;
 
     // Ensure emergencyContacts is an array
-    if (!Array.isArray(emergencyContacts)) {
+    if (!Array.isArray(emergencyContacts) || emergencyContacts.length === 0) {
       emergencyContacts = [];
     }
 
-    // Insert Emergency Contacts
-    for (let contact of emergencyContacts) {
-      const { error: contactError } = await supabase
-        .from("emergency_contacts")
-        .insert([{ user_id: userId, ...contact }]);
-      if (contactError) throw contactError;
-    }
+    // Format emergency contacts to include user_id
+    const formattedContacts = emergencyContacts.map(contact => ({
+      user_id: userId,
+      ...contact
+    }));
+
+    // Insert multiple emergency contacts in a single query
+    const { error: contactError } = await supabase
+      .from("emergency_contacts")
+      .insert(formattedContacts);
+
+    if (contactError) throw contactError;
 
     return { success: true, message: "All data submitted successfully!" };
   } catch (error) {
     console.error("Error inserting user data:", error.message);
     return { success: false, message: error.message };
   }
-}
+}     
 
 export { insertUserData };

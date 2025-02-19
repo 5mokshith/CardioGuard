@@ -1,6 +1,6 @@
 :root {
-  --card-bg: #efefef;
-  --card-foreground: white;
+  --card-bg-main: #efefef;
+  --card-foreground-main: white;
   --background-dark: #0a0a0a;
   --card-bg: rgba(32, 32, 32, 0.7);
   --text-primary: #ffffff;
