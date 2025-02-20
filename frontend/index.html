@@ -4,179 +4,693 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Health Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
-    <link rel="stylesheet" href="src/style.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="./src/scripts/main.js"></script>
+    <script type="module" src="src/scripts/auth.js" defer></script>
+    <link rel="stylesheet" href="src/style.css" />
   </head>
+
   <body>
-    <a href="src/markup/sign-up.html">sign up</a>
-    <div class="header">
-      <h1>Health Dashboard</h1>
-      <div class="user-info" id="userProfile">
-        <div class="user-avatar">🌚</div>
-        <span>John Cena</span>
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2>Patient Portal</h2>
+        <button class="close-sidebar" id="closeSidebar">&times;</button>
       </div>
-    </div>
+      <div class="sidebar-section visible">
+        <div class="profile-avatar">😷</div>
+        <h3 style="text-align: center; margin-bottom: 1rem"></h3>
 
-    
-    </div>
-
-    <div class="grids">
-      <div class="dashboard-grid">
-        <div class="metric-card">
-          <div class="metric-title">Heart Rate</div>
-          <div class="metric-value"><span id="heartRate">75</span> BPM</div>
-          <div class="status">Normal</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-title">SpO2</div>
-          <div class="metric-value"><span id="spo2">98</span>%</div>
-          <div class="status">Normal</div>
-        </div>
-      </div>
-      <div class="charts-grid">
-        <div
-          class="chart-card"
-          id="ecgChart"
-          style="width: 100%; height: 300px"
-        ></div>
-        <div
-          class="chart-card"
-          id="spo2Chart"
-          style="width: 100%; height: 300px"
-        ></div>
-      </div>
-    </div>
-
-    <div
-      class="history"
-      style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px"
-    >
-      <div class="history-card">
-        <h3>History Log</h3>
-        <table class="history-table">
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>Heart Rate</th>
-              <th>SpO2</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="historyTableBody"></tbody>
-        </table>
+        <ul class="sidebar-nav">
+          <li class="sidebar-nav-item active" data-section="personal-info">
+            <span class="nav-icon">👤</span> Profile
+          </li>
+          <li class="sidebar-nav-item" data-section="health-data">
+            <span class="nav-icon">📊</span> Health Data
+          </li>
+          <li class="sidebar-nav-item" data-section="medications">
+            <span class="nav-icon">💊</span> Medications
+          </li>
+          <li class="sidebar-nav-item" data-section="medical-history">
+            <span class="nav-icon">📜</span> Medical History
+          </li>
+          <li class="sidebar-nav-item" data-section="settings">
+            <span class="nav-icon">⚙️</span> Settings
+          </li>
+        </ul>
       </div>
 
-      <div class="right-column">
-        <div class="card">
-          <button class="btn emergency-btn emergency-services">
-            Emergency Services
-          </button>
-          <button class="btn emergency-btn call-doctor">Call Doctor</button>
+      <div class="sidebar-section" id="personal-info-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">👤</span> Personal Info
+        </h3>
+        <div class="sidebar-section-content">
+          <div class="data-item">
+            <span class="data-label">Full Name</span>
+            <span class="data-value">John Felix Cena</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Date of Birth</span>
+            <span class="data-value">April 23, 1977</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Blood Type</span>
+            <span class="data-value">O+</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Height</span>
+            <span class="data-value">185 cm</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Weight</span>
+            <span class="data-value">114 kg</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Contact</span>
+            <span class="data-value">+1 (555) 123-4567</span>
+          </div>
         </div>
       </div>
+      <!-- lifestyle section  -->
+      <div class="sidebar-section" id="lifestyle-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">🏋️</span> Lifestyle
+        </h3>
+        <div class="sidebar-section-content"></div>
+      </div>
+
+      <div class="sidebar-section" id="emergency-contacts-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">📞</span> Emergency Contacts
+        </h3>
+        <div class="sidebar-section-content"></div>
+      </div>
+      <!--  -->
+
+      <div class="sidebar-section" id="medical-history-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">📜</span> Medical History
+        </h3>
+        <div class="sidebar-section-content">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-date">2024-01-15</div>
+              <div class="timeline-title">Routine Checkup</div>
+              <div class="timeline-description">
+                All vitals normal. Recommended continued exercise regimen.
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2023-11-20</div>
+              <div class="timeline-title">Minor Ankle Sprain</div>
+              <div class="timeline-description">
+                R.I.C.E. treatment prescribed. Follow-up in 2 weeks.
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2023-08-05</div>
+              <div class="timeline-title">Annual Physical</div>
+              <div class="timeline-description">
+                Blood work showed slightly elevated cholesterol. Started on
+                Atorvastatin.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section" id="health-data-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">📊</span> Health Data
+        </h3>
+        <div class="sidebar-section-content">
+          <div class="data-item">
+            <span class="data-label">Average Heart Rate</span>
+            <span class="data-value">72 BPM</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Average SpO2</span>
+            <span class="data-value">98%</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Latest Blood Pressure</span>
+            <span class="data-value">120/80 mmHg</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section" id="settings-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">⚙️</span> Settings
+        </h3>
+        <div class="sidebar-section-content">
+          <div class="data-item">
+            <span class="data-label">Notifications</span>
+            <span class="data-value">Enabled</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Data Sharing</span>
+            <span class="data-value">Limited</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Theme</span>
+            <span class="data-value">Dark</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <script>
-      // Initialize ECG Chart
-      var ecgChart = echarts.init(document.getElementById("ecgChart"));
-      var ecgData = [];
-      for (var i = 0; i < 50; i++) {
-        ecgData.push([i, Math.sin(i / 5) * 10 + Math.random() * 2]);
+    <!-- Main Content -->
+    <div class="content-wrapper" id="contentWrapper">
+      <a href="src/markup/sign-up.html">sign up</a>
+      <div class="header">
+        <h1>Health Dashboard</h1>
+        <div class="user-info" id="userProfile">
+          <div class="user-avatar">🌚</div>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="grids">
+        <div class="dashboard-grid">
+          <div class="metric-card">
+            <div class="metric-title">Heart Rate</div>
+            <div class="metric-value"><span id="heartRate">75</span> BPM</div>
+            <div class="status normal">Normal</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">SpO2</div>
+            <div class="metric-value"><span id="spo2">98</span>%</div>
+            <div class="status normal">Normal</div>
+          </div>
+        </div>
+        <div class="charts-grid">
+          <div
+            class="chart-card"
+            id="ecgChart"
+            style="width: 100%; height: 300px"
+          ></div>
+          <div
+            class="chart-card"
+            id="spo2Chart"
+            style="width: 100%; height: 300px"
+          ></div>
+        </div>
+      </div>
+
+      <div class="history">
+        <div class="history-card">
+          <h3>History Log</h3>
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Heart Rate</th>
+                <th>SpO2</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="right-column">
+          <div class="card">
+            <button class="emergency-btn emergency-services">
+              Emergency Services 🚨
+            </button>
+            <button class="emergency-btn call-doctor">Call Doctor 🧑‍⚕️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay" class="modal-overlay"></div>
+  </body>
+
+  <script type="module">
+    import { supabase } from "./src/scripts/auth.js";
+
+    // Fix 1: Define the initializeSupabase function
+    function initializeSupabase() {
+      return supabase;
+    }
+
+    async function say() {
+      console.log(await supabase.auth.getSession());
+    }
+
+    say();
+    // changed n tims
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const { data: sessionData, error } = await supabase.auth.getSession();
+
+        if (error || !sessionData || !sessionData.session) {
+          console.error("No active session");
+          return;
+        }
+
+        const user_id = sessionData.session.user.id; // ✅ Now user_id is defined
+        console.log("User ID:", user_id);
+
+        await loadAllUserData(user_id);
+      } catch (error) {
+        console.error("Error in DOMContentLoaded:", error);
       }
-      var ecgOption = {
+    });
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      // Hide all sections except nav initially
+      document
+        .querySelectorAll(".sidebar-section:not(:first-child)")
+        .forEach((section) => {
+          section.classList.remove("visible");
+        });
+
+      // Initialize charts
+      const ecgChart = echarts.init(document.getElementById("ecgChart"));
+      const spo2Chart = echarts.init(document.getElementById("spo2Chart"));
+
+      // Your existing chart configurations remain unchanged
+      const ecgData = Array.from({ length: 50 }, (_, i) => [
+        i,
+        Math.sin(i / 5) * 10 + Math.random() * 2,
+      ]);
+
+      const ecgOption = {
         title: { text: "ECG Waveform" },
         xAxis: { type: "category" },
         yAxis: { type: "value" },
-        series: [{ type: "line", data: ecgData }],
+        series: [
+          {
+            type: "line",
+            data: ecgData,
+            smooth: true,
+            lineStyle: {
+              width: 2,
+            },
+          },
+        ],
       };
       ecgChart.setOption(ecgOption);
 
-      // Initialize SpO2 Chart
-      var spo2Chart = echarts.init(document.getElementById("spo2Chart"));
-      var spo2Data = [];
-      for (var i = 0; i < 50; i++) {
-        spo2Data.push([i, 95 + Math.random() * 3]);
-      }
-      var spo2Option = {
+      // SpO2 Chart configuration
+      const spo2Data = Array.from({ length: 50 }, (_, i) => [
+        i,
+        95 + Math.random() * 3,
+      ]);
+
+      const spo2Option = {
         title: { text: "SpO2 Levels" },
         xAxis: { type: "category" },
-        yAxis: { type: "value" },
-        series: [{ type: "line", data: spo2Data }],
+        yAxis: {
+          type: "value",
+          min: 90,
+          max: 100,
+        },
+        series: [
+          {
+            type: "line",
+            data: spo2Data,
+            smooth: true,
+            lineStyle: {
+              width: 2,
+            },
+          },
+        ],
       };
       spo2Chart.setOption(spo2Option);
 
-      // Populate history log with sample data
-      document.addEventListener("DOMContentLoaded", function () {
-        var sampleHistory = [
-          {
-            timestamp: "2025-02-19 10:00",
-            heartRate: 75,
-            spo2: 98,
-            status: "Normal",
-          },
-          {
-            timestamp: "2025-02-19 10:05",
-            heartRate: 80,
-            spo2: 97,
-            status: "Normal",
-          },
-          {
-            timestamp: "2025-02-19 10:10",
-            heartRate: 72,
-            spo2: 99,
-            status: "Normal",
-          },
-          {
-            timestamp: "2025-02-19 10:15",
-            heartRate: 85,
-            spo2: 96,
-            status: "Elevated",
-          },
-        ];
-        const table = document.querySelector(".history-table");
-        sampleHistory.forEach((entry) => {
-          console.log(entry.heartRate);
-          var row = document.createElement("tr");
-          row.innerHTML = `
-                <td>${entry.timestamp}</td>
-                <td>${entry.heartRate}</td>
-                <td>${entry.spo2}</td>
-                <td>${entry.status}</td>
-            `;
-          historyTableBody.appendChild(row);
-        });
+      // Profile Handler Code
+      const userProfile = document.getElementById("userProfile");
+      const sidebar = document.querySelector(".sidebar");
+      const overlay = document.getElementById("overlay");
+      const closeSidebarBtn = document.getElementById("closeSidebar");
+      const contentWrapper = document.getElementById("contentWrapper");
+
+      // Profile click handler
+      userProfile.addEventListener("click", async function () {
+        try {
+          const {
+            data: { session },
+            error,
+          } = await supabase.auth.getSession();
+
+          if (error) throw error;
+
+          if (!session) {
+            console.error("No active session");
+            window.location.href = "/src/markup/sign-up.html";
+            return;
+          }
+
+          await loadAllUserData(session.user.id);
+
+          // Show sidebar and overlay
+          sidebar.classList.add("open");
+          overlay.classList.add("show");
+          contentWrapper.classList.add("sidebar-open");
+
+          // Show only first section content (nav), hide others
+          document
+            .querySelectorAll(".sidebar-section:not(:first-child)")
+            .forEach((section) => {
+              section.classList.remove("visible");
+            });
+
+          // Activate the profile tab by default
+          const profileNavItem = document.querySelector(
+            '[data-section="personal-info"]'
+          );
+          if (profileNavItem) {
+            profileNavItem.click();
+          }
+        } catch (error) {
+          console.error("Error loading profile:", error);
+          alert("Error loading profile data");
+        }
       });
 
+      // Close sidebar handler
+      function closeSidebar() {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("show");
+        contentWrapper.classList.remove("sidebar-open");
+      }
 
-      // Open user profile form
-const userProfile = document.getElementById('userProfile');
-const profileInfo = document.createElement('div');
+      closeSidebarBtn.addEventListener("click", closeSidebar);
+      overlay.addEventListener("click", closeSidebar);
 
-profileInfo.className = 'expanded-profile hidden';
-profileInfo.innerHTML = `
-    <div class="profile-details">
-        <p><strong>Name:</strong> John Cena</p>
-        <p><strong>Age:</strong> 46</p>
-        <p><strong>Blood Group:</strong> O+</p>
-        <p><strong>Medical History:</strong> No major issues</p>
-    </div>
-`;
+      // Modified navigation handler
+      const navItems = document.querySelectorAll(".sidebar-nav-item");
+      navItems.forEach((item) => {
+        item.addEventListener("click", function () {
+          // Remove active class from all items
+          navItems.forEach((nav) => nav.classList.remove("active"));
+          // Add active class to clicked item
+          this.classList.add("active");
 
-userProfile.appendChild(profileInfo);
+          // Hide all content sections first
+          document
+            .querySelectorAll(".sidebar-section:not(:first-child)")
+            .forEach((section) => {
+              section.classList.remove("visible");
+            });
 
-userProfile.addEventListener('click', function(e) {
-    e.stopPropagation();
-    profileInfo.classList.toggle('hidden');
-});
+          // Show the selected section
+          const sectionName = this.getAttribute("data-section");
+          const targetSection = document.getElementById(
+            `${sectionName}-section`
+          );
+          if (targetSection) {
+            targetSection.classList.add("visible");
+          }
+        });
+      });
+    });
 
-document.addEventListener('click', function(e) {
-    if (!userProfile.contains(e.target)) {
-        profileInfo.classList.add('hidden');
+    // Data loading and update functions
+    async function loadAllUserData(user_id) {
+      try {
+        const [
+          { data: user },
+          { data: personalInfo },
+          { data: medicalInfo },
+          { data: lifestyle },
+          { data: emergencyContactsData },
+        ] = await Promise.all([
+          supabase.from("users").select("*").eq("id", user_id).single(),
+          supabase
+            .from("personal_info")
+            .select("*")
+            .eq("user_id", user_id)
+            .single(),
+          supabase
+            .from("medical_info")
+            .select("*")
+            .eq("user_id", user_id)
+            .single(),
+          supabase
+            .from("lifestyle")
+            .select("*")
+            .eq("user_id", user_id)
+            .single(),
+          supabase
+            .from("emergency_contacts")
+            .select("*")
+            .eq("user_id", user_id), // ✅ No `.single()`, returns an array
+        ]);
+
+        console.log("Emergency Contacts Data:", emergencyContactsData);
+
+        if (
+          !user ||
+          !personalInfo ||
+          !medicalInfo ||
+          !lifestyle ||
+          !Array.isArray(emergencyContactsData)
+        ) {
+          throw new Error(
+            "Could not fetch user data or emergencyContacts is not an array"
+          );
+        }
+
+        updateProfileHeaders(user.name);
+        updatePersonalInfo(user, personalInfo);
+        updateMedicalInfo(medicalInfo);
+        updateLifestyleInfo(lifestyle);
+        updateEmergencyContacts(emergencyContactsData); // ✅ Now correctly passing an array
+      } catch (error) {
+        console.error("Error in loadAllUserData:", error);
+        throw error;
+      }
     }
-});
-    </script>
-  </body>
+
+    function updateProfileHeaders(userName) {
+      document.querySelector(
+        ".sidebar-header h2"
+      ).textContent = `${userName}'s Portal`;
+      document.querySelector(".sidebar-section h3").textContent = userName;
+      document.querySelector(".user-info span").textContent = userName;
+    }
+
+    function updatePersonalInfo(user, personalInfo) {
+      const container = document.querySelector(
+        "#personal-info-section .sidebar-section-content"
+      );
+
+      if (!container) return;
+
+      container.innerHTML = `
+            <div class="data-item">
+                <span class="data-label">Full Name</span>
+                <span class="data-value">${user.name}</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Email</span>
+                <span class="data-value">${user.email}</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Date of Birth</span>
+                <span class="data-value">${new Date(
+                  personalInfo.dob
+                ).toLocaleDateString()}</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Blood Type</span>
+                <span class="data-value">${
+                  personalInfo.blood_type || "Not specified"
+                }</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Height</span>
+                <span class="data-value">${
+                  personalInfo.height_cm || "Not specified"
+                } cm</span>
+            </div>
+            <div class="data-item">
+                <span class="data-label">Weight</span>
+                <span class="data-value">${
+                  personalInfo.weight_kg || "Not specified"
+                } kg</span>
+            </div>
+        `;
+    }
+
+    function updateMedicalInfo(medicalInfo) {
+      const section = document.querySelector("#medical-history-section");
+      const container = document.querySelector(
+        "#medical-history-section .sidebar-section-content"
+      );
+
+      console.log("Updating Medical Info:", medicalInfo);
+      if (!container) return;
+
+      const conditions = [
+        { name: "Diabetes", value: medicalInfo.diabetes },
+        { name: "Hypertension", value: medicalInfo.hypertension },
+        { name: "Heart Disease", value: medicalInfo.heart_disease },
+        { name: "Asthma", value: medicalInfo.asthma },
+        { name: "Allergies", value: medicalInfo.allergies },
+      ];
+
+      // Force UI update
+      container.innerHTML = "";
+      container.style.display = "none";
+
+      setTimeout(() => {
+        conditions.forEach((condition) => {
+          if (condition.value) {
+            // Only show if true
+            const div = document.createElement("div");
+            div.className = "medical-condition active";
+            div.innerHTML = `
+                <span class="condition-name"> Diagnosed with : ${condition.name} </span>
+                <span class="condition-status"></span>
+            `;
+            container.appendChild(div);
+          }
+        });
+
+        if (medicalInfo.notes) {
+          // Only show notes if available
+          const notesDiv = document.createElement("div");
+          notesDiv.classList.add("notes-section");
+          notesDiv.innerHTML = `
+            <h4>Additional Notes</h4>
+            <p>${medicalInfo.notes}</p>
+        `;
+          container.appendChild(notesDiv);
+        }
+
+        // 🔥 Force reflow
+        void container.offsetHeight;
+        container.style.display = "block";
+
+        // Ensure visibility
+        section.classList.add("visible");
+        section.style.opacity = "1";
+        section.style.maxHeight = "none";
+        section.style.pointerEvents = "auto";
+      }, 200);
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const userSession = await supabase.auth.getSession();
+      if (userSession.data?.session) {
+        loadAllUserData(userSession.data.session.user.id);
+      } else {
+        console.error("No active session");
+      }
+    });
+    console.log(document.querySelector("#medical-history-section").classList);
+
+    // emergwency constcts
+    supabase
+      .from("emergency_contacts")
+      .select("*")
+      .eq("user_id", user_id)
+      .single();
+
+    function updateEmergencyContacts(emergencyContacts) {
+      const container = document.querySelector(
+        "#emergency-contacts-section .sidebar-section-content"
+      );
+      if (!container) return;
+
+      container.innerHTML = ""; // Clear existing content
+
+      if (!Array.isArray(emergencyContacts) || emergencyContacts.length === 0) {
+        container.innerHTML =
+          "<div class='no-contacts'>No emergency contacts available</div>";
+        return;
+      }
+
+      emergencyContacts.forEach((contact) => {
+        const contactDiv = document.createElement("div");
+        contactDiv.classList.add("contact-item");
+        contactDiv.innerHTML = `
+            <div class="contact-name"><strong>${contact.name}</strong> (${
+          contact.relationship
+        })</div>
+            <div class="contact-phone">📞 ${contact.phone}</div>
+            <div class="contact-email">✉️ ${contact.email}</div>
+            ${
+              contact.is_primary
+                ? '<div class="primary-contact">⭐ Primary Contact</div>'
+                : ""
+            }
+        `;
+        container.appendChild(contactDiv);
+      });
+    }
+
+    // lifestyle
+    function updateLifestyleInfo(lifestyle) {
+      const container = document.querySelector(
+        "#lifestyle-section .sidebar-section-content"
+      );
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="data-item">
+            <span class="data-label">Smoking</span>
+            <span class="data-value">${
+              lifestyle.smoking ? "Yes 🚬" : "No 🚭"
+            }</span>
+        </div>
+        <div class="data-item">
+            <span class="data-label">Alcohol</span>
+            <span class="data-value">${
+              lifestyle.alcohol ? "Yes 🍷" : "No 🚫"
+            }</span>
+        </div>
+        <div class="data-item">
+            <span class="data-label">Exercise</span>
+            <span class="data-value">${
+              lifestyle.exercise ? "Yes 🏋️" : "No ❌"
+            }</span>
+        </div>
+    `;
+    }
+
+    // function updateMedications(medications) {
+    //   const container = document.querySelector(
+    //     "#medications-section .sidebar-section-content"
+    //   );
+
+    //   if (!container) return;
+
+    //   if (!medications || medications.length === 0) {
+    //     container.innerHTML =
+    //       '<div class="no-medications">No current medications</div>';
+    //     return;
+    //   }
+
+    //   const medList = Array.isArray(medications)
+    //     ? medications
+    //     : medications.split(",");
+
+    //   container.innerHTML = medList
+    //     .map(
+    //       (med) => `
+    //             <div class="medication-item">
+    //                 <div>
+    //                     <div class="medication-name">${med.trim()}</div>
+    //                     <div class="medication-schedule">As prescribed</div>
+    //                 </div>
+    //                 <div class="next-dose">Track your doses</div>
+    //             </div>
+    //         `
+    //     )
+    //     .join("");
+    // }
+  </script>
 </html>
