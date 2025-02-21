@@ -2,7 +2,7 @@
   --card-bg-main: #efefef;
   --card-foreground-main: white;
   --background-dark: #0a0a0a;
-  --card-bg: rgba(32, 32, 32, 0.7);
+  --card-bg: rgba(21, 21, 21, 0.7);
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.6);
   --accent-blue: #007bff;
@@ -220,6 +220,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  background: var(--card-bg);
 }
 
 .user-info:hover {
@@ -406,6 +407,7 @@ body {
   backdrop-filter: blur(var(--glass-blur));
   border-radius: 1rem;
   padding: 1.25rem;
+  width: 100%;
 }
 
 .history > .right-column > .card > .emergency-btn {
@@ -461,4 +463,16 @@ body {
   opacity: 1 !important;
   max-height: 1000px !important;
   margin-bottom: 1rem !important;
+}
+
+.sidebar-section-content #go-back {
+ font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
 }

@@ -8,6 +8,35 @@ async function say() {
   console.log(await supabase.auth.getSession());
 }
 
+async function getDoctorContact(userId) {
+  try {
+    const { data: contacts, error } = await supabase
+      .from("emergency_contacts")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("relationship", "Doctor");
+
+    if (error) throw error;
+
+    // If no specific doctor found, get the first emergency contact
+    if (!contacts || contacts.length === 0) {
+      const { data: allContacts, error: allError } = await supabase
+        .from("emergency_contacts")
+        .select("*")
+        .eq("user_id", userId)
+        .limit(1);
+
+      if (allError) throw allError;
+      return allContacts?.[0]?.phone;
+    }
+
+    return contacts[0].phone;
+  } catch (error) {
+    console.error("Error fetching doctor contact:", error);
+    return null;
+  }
+}
+
 async function loadAllUserData(user_id) {
   try {
     const [
@@ -140,8 +169,6 @@ function updateMedicalInfo(medicalInfo) {
     `;
     container.appendChild(notesDiv);
   }
-
-
 }
 
 function updateEmergencyContacts(emergencyContacts) {
@@ -150,7 +177,7 @@ function updateEmergencyContacts(emergencyContacts) {
   );
   if (!container) return;
 
-  container.innerHTML = ""; 
+  container.innerHTML = "";
 
   if (!Array.isArray(emergencyContacts) || emergencyContacts.length === 0) {
     container.innerHTML =
@@ -203,8 +230,6 @@ function updateLifestyleInfo(lifestyle) {
   `;
 }
 
-// Initialize charts and set up event listeners
-// Initialize charts and set up event listeners
 document.addEventListener("DOMContentLoaded", async function () {
   say();
 
@@ -226,7 +251,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Initialize both charts
   const spo2Chart = echarts.init(document.getElementById("spo2Chart"));
-  const ecgChart = echarts.init(document.getElementById("ecgChart")); // Add this line
+  const ecgChart = echarts.init(document.getElementById("ecgChart"));
 
   const ecgData = Array.from({ length: 50 }, (_, i) => [
     i,
@@ -276,6 +301,33 @@ document.addEventListener("DOMContentLoaded", async function () {
   };
   spo2Chart.setOption(spo2Option);
 
+  const callDoctorBtn = document.querySelector(".emergency-btn.call-doctor");
+  if (callDoctorBtn) {
+    callDoctorBtn.addEventListener("click", async () => {
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+        if (error || !session) {
+          throw new Error("No active session");
+        }
+
+        const phoneNumber = await getDoctorContact(session.user.id);
+        if (phoneNumber) {
+          window.location.href = `tel:${phoneNumber}`;
+        } else {
+          alert(
+            "No doctor contact number found. Please add emergency contacts in your profile."
+          );
+        }
+      } catch (error) {
+        console.error("Error making doctor call:", error);
+        alert("Unable to make call. Please check your emergency contacts.");
+      }
+    });
+  }
+
   // Profile Handler Code
   const userProfile = document.getElementById("userProfile");
   const sidebar = document.querySelector(".sidebar");
@@ -301,15 +353,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       await loadAllUserData(session.user.id);
 
-      // Show sidebar and overlay
       sidebar.classList.add("open");
       overlay.classList.add("show");
       contentWrapper.classList.add("sidebar-open");
 
-      // Ensure only navigation menu is visible on open
       document.querySelector(".sidebar-nav-container").classList.add("visible");
 
-      // Hide all content sections initially
       document
         .querySelectorAll(".sidebar-section:not(.sidebar-nav-container)")
         .forEach((section) => {
@@ -331,23 +380,18 @@ document.addEventListener("DOMContentLoaded", async function () {
   closeSidebarBtn.addEventListener("click", closeSidebar);
   overlay.addEventListener("click", closeSidebar);
 
-  // Improved navigation handler - each click shows only that section and hides others
   const navItems = document.querySelectorAll(".sidebar-nav-item");
   navItems.forEach((item) => {
     item.addEventListener("click", function () {
-      // Remove active class from all items
       navItems.forEach((nav) => nav.classList.remove("active"));
-      // Add active class to clicked item
       this.classList.add("active");
 
-      // Hide all content sections first
       document
         .querySelectorAll(".sidebar-section:not(.sidebar-nav-container)")
         .forEach((section) => {
           section.classList.remove("visible");
         });
 
-      // Show the selected section
       const sectionName = this.getAttribute("data-section");
       const targetSection = document.getElementById(`${sectionName}-section`);
       if (targetSection) {
