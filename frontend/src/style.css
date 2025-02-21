@@ -46,7 +46,6 @@ body {
 .modal-overlay.show {
   display: block;
 }
-/* mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm */
 
 .sidebar {
   position: fixed;
@@ -93,6 +92,9 @@ body {
   margin-bottom: 2rem;
   transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
   overflow: hidden;
+  display: none;
+  opacity: 0;
+  max-height: 0;
 }
 
 .sidebar-section > .sidebar-section-title {
@@ -124,38 +126,14 @@ body {
   margin: 0 auto 1rem;
 }
 
-.sidebar-section.personal-info {
-  max-height: 0;
-  opacity: 0;
-  margin: 0;
-  padding: 0;
-  pointer-events: none;
-}
-
-.sidebar-section.personal-info.visible {
-  max-height: 500px;
+.sidebar-section.visible {
+  display: block;
   opacity: 1;
+  max-height: 1000px;
   margin-bottom: 2rem;
   padding: initial;
   pointer-events: auto;
 }
-.sidebar-section.medical-history {
-  display: block !important;
-  max-height: none !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
- 
-
-
-.sidebar-section.medical-history.visible {
-  max-height: none;
-  opacity: 1;
-  margin-bottom: 2rem;
-  padding: initial;
-  pointer-events: auto;
-}
-
 
 .sidebar-section-content > .data-item {
   display: flex;
@@ -467,7 +445,7 @@ body {
   }
 
   .content-wrapper.sidebar-open {
-    margin-right: 0; /* Changed from margin-left to margin-right */
+    margin-right: 0;
     opacity: 0.3;
     pointer-events: none;
   }
@@ -475,4 +453,12 @@ body {
   .history {
     grid-template-columns: 1fr;
   }
+}
+
+/* Always show the navigation section */
+.sidebar-nav-container {
+  display: block !important;
+  opacity: 1 !important;
+  max-height: 1000px !important;
+  margin-bottom: 1rem !important;
 }
