@@ -56,7 +56,7 @@
 .progress-container {
   position: relative;
   width: 80%;
-  margin: 2rem auto 3rem;
+  margin: 1rem auto;
   height: 4px;
   background-color: #e0e0e0;
   border-radius: 2px;
