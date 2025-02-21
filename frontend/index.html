@@ -15,6 +15,32 @@
     <script src="./src/scripts/main.js"></script>
     <script type="module" src="src/scripts/auth.js" defer></script>
     <link rel="stylesheet" href="src/style.css" />
+    <style>
+      /* Updated sidebar section styles */
+      .sidebar-section {
+        display: none;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+        margin: 0;
+      }
+      
+      .sidebar-section.visible {
+        display: block;
+        opacity: 1;
+        max-height: 1000px;
+        margin-bottom: 1rem;
+      }
+      
+      /* Always show the navigation section */
+      .sidebar-nav-container {
+        display: block !important;
+        opacity: 1 !important;
+        max-height: 1000px !important;
+        margin-bottom: 1rem !important;
+      }
+    </style>
   </head>
 
   <body>
@@ -23,22 +49,27 @@
         <h2>Patient Portal</h2>
         <button class="close-sidebar" id="closeSidebar">&times;</button>
       </div>
-      <div class="sidebar-section visible">
+
+      <!-- Navigation menu - always visible -->
+      <div class="sidebar-section sidebar-nav-container visible">
         <div class="profile-avatar">😷</div>
         <h3 style="text-align: center; margin-bottom: 1rem"></h3>
 
         <ul class="sidebar-nav">
-          <li class="sidebar-nav-item active" data-section="personal-info">
+          <li class="sidebar-nav-item" data-section="personal-info">
             <span class="nav-icon">👤</span> Profile
           </li>
           <li class="sidebar-nav-item" data-section="health-data">
             <span class="nav-icon">📊</span> Health Data
           </li>
-          <li class="sidebar-nav-item" data-section="medications">
-            <span class="nav-icon">💊</span> Medications
+          <li class="sidebar-nav-item" data-section="emergency-contacts">
+            <span class="nav-icon">📞</span> Emergency Contacts
           </li>
           <li class="sidebar-nav-item" data-section="medical-history">
-            <span class="nav-icon">📜</span> Medical History
+            <span class="nav-icon">📜</span> Medical History            
+          </li>
+          <li class="sidebar-nav-item" data-section="lifestyle">
+            <span class="nav-icon">🏋️</span> Lifestyle
           </li>
           <li class="sidebar-nav-item" data-section="settings">
             <span class="nav-icon">⚙️</span> Settings
@@ -46,52 +77,33 @@
         </ul>
       </div>
 
+      <!-- Content sections - hidden by default, shown only when selected -->
       <div class="sidebar-section" id="personal-info-section">
         <h3 class="sidebar-section-title">
           <span class="nav-icon">👤</span> Personal Info
         </h3>
         <div class="sidebar-section-content">
-          <div class="data-item">
-            <span class="data-label">Full Name</span>
-            <span class="data-value">John Felix Cena</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Date of Birth</span>
-            <span class="data-value">April 23, 1977</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Blood Type</span>
-            <span class="data-value">O+</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Height</span>
-            <span class="data-value">185 cm</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Weight</span>
-            <span class="data-value">114 kg</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Contact</span>
-            <span class="data-value">+1 (555) 123-4567</span>
-          </div>
+          <!-- Personal info content will be loaded dynamically -->
         </div>
       </div>
-      <!-- lifestyle section  -->
+      
       <div class="sidebar-section" id="lifestyle-section">
         <h3 class="sidebar-section-title">
           <span class="nav-icon">🏋️</span> Lifestyle
         </h3>
-        <div class="sidebar-section-content"></div>
+        <div class="sidebar-section-content">
+          <!-- Lifestyle content will be loaded dynamically -->
+        </div>
       </div>
 
       <div class="sidebar-section" id="emergency-contacts-section">
         <h3 class="sidebar-section-title">
           <span class="nav-icon">📞</span> Emergency Contacts
         </h3>
-        <div class="sidebar-section-content"></div>
+        <div class="sidebar-section-content">
+          <!-- Emergency contacts will be loaded dynamically -->
+        </div>
       </div>
-      <!--  -->
 
       <div class="sidebar-section" id="medical-history-section">
         <h3 class="sidebar-section-title">
@@ -247,7 +259,7 @@
     }
 
     say();
-    // changed n tims
+    
     document.addEventListener("DOMContentLoaded", async () => {
       try {
         const { data: sessionData, error } = await supabase.auth.getSession();
@@ -257,7 +269,7 @@
           return;
         }
 
-        const user_id = sessionData.session.user.id; // ✅ Now user_id is defined
+        const user_id = sessionData.session.user.id;
         console.log("User ID:", user_id);
 
         await loadAllUserData(user_id);
@@ -267,18 +279,11 @@
     });
 
     document.addEventListener("DOMContentLoaded", async function () {
-      // Hide all sections except nav initially
-      document
-        .querySelectorAll(".sidebar-section:not(:first-child)")
-        .forEach((section) => {
-          section.classList.remove("visible");
-        });
-
       // Initialize charts
       const ecgChart = echarts.init(document.getElementById("ecgChart"));
       const spo2Chart = echarts.init(document.getElementById("spo2Chart"));
 
-      // Your existing chart configurations remain unchanged
+      // ECG Chart configuration
       const ecgData = Array.from({ length: 50 }, (_, i) => [
         i,
         Math.sin(i / 5) * 10 + Math.random() * 2,
@@ -358,20 +363,15 @@
           overlay.classList.add("show");
           contentWrapper.classList.add("sidebar-open");
 
-          // Show only first section content (nav), hide others
+          // Ensure only navigation menu is visible on open
+          document.querySelector(".sidebar-nav-container").classList.add("visible");
+          
+          // Hide all content sections initially
           document
-            .querySelectorAll(".sidebar-section:not(:first-child)")
+            .querySelectorAll(".sidebar-section:not(.sidebar-nav-container)")
             .forEach((section) => {
               section.classList.remove("visible");
             });
-
-          // Activate the profile tab by default
-          const profileNavItem = document.querySelector(
-            '[data-section="personal-info"]'
-          );
-          if (profileNavItem) {
-            profileNavItem.click();
-          }
         } catch (error) {
           console.error("Error loading profile:", error);
           alert("Error loading profile data");
@@ -388,7 +388,7 @@
       closeSidebarBtn.addEventListener("click", closeSidebar);
       overlay.addEventListener("click", closeSidebar);
 
-      // Modified navigation handler
+      // Improved navigation handler - each click shows only that section and hides others
       const navItems = document.querySelectorAll(".sidebar-nav-item");
       navItems.forEach((item) => {
         item.addEventListener("click", function () {
@@ -399,7 +399,7 @@
 
           // Hide all content sections first
           document
-            .querySelectorAll(".sidebar-section:not(:first-child)")
+            .querySelectorAll(".sidebar-section:not(.sidebar-nav-container)")
             .forEach((section) => {
               section.classList.remove("visible");
             });
@@ -445,10 +445,8 @@
           supabase
             .from("emergency_contacts")
             .select("*")
-            .eq("user_id", user_id), // ✅ No `.single()`, returns an array
+            .eq("user_id", user_id),
         ]);
-
-        console.log("Emergency Contacts Data:", emergencyContactsData);
 
         if (
           !user ||
@@ -466,7 +464,7 @@
         updatePersonalInfo(user, personalInfo);
         updateMedicalInfo(medicalInfo);
         updateLifestyleInfo(lifestyle);
-        updateEmergencyContacts(emergencyContactsData); // ✅ Now correctly passing an array
+        updateEmergencyContacts(emergencyContactsData);
       } catch (error) {
         console.error("Error in loadAllUserData:", error);
         throw error;
@@ -477,7 +475,7 @@
       document.querySelector(
         ".sidebar-header h2"
       ).textContent = `${userName}'s Portal`;
-      document.querySelector(".sidebar-section h3").textContent = userName;
+      document.querySelector(".sidebar-nav-container h3").textContent = userName;
       document.querySelector(".user-info span").textContent = userName;
     }
 
@@ -525,12 +523,10 @@
     }
 
     function updateMedicalInfo(medicalInfo) {
-      const section = document.querySelector("#medical-history-section");
       const container = document.querySelector(
         "#medical-history-section .sidebar-section-content"
       );
 
-      console.log("Updating Medical Info:", medicalInfo);
       if (!container) return;
 
       const conditions = [
@@ -541,63 +537,63 @@
         { name: "Allergies", value: medicalInfo.allergies },
       ];
 
-      // Force UI update
+      // Clear previous content
       container.innerHTML = "";
-      container.style.display = "none";
 
-      setTimeout(() => {
-        conditions.forEach((condition) => {
-          if (condition.value) {
-            // Only show if true
-            const div = document.createElement("div");
-            div.className = "medical-condition active";
-            div.innerHTML = `
-                <span class="condition-name"> Diagnosed with : ${condition.name} </span>
-                <span class="condition-status"></span>
-            `;
-            container.appendChild(div);
-          }
-        });
-
-        if (medicalInfo.notes) {
-          // Only show notes if available
-          const notesDiv = document.createElement("div");
-          notesDiv.classList.add("notes-section");
-          notesDiv.innerHTML = `
-            <h4>Additional Notes</h4>
-            <p>${medicalInfo.notes}</p>
-        `;
-          container.appendChild(notesDiv);
+      // Add medical conditions if they exist
+      conditions.forEach((condition) => {
+        if (condition.value) {
+          // Only show if true
+          const div = document.createElement("div");
+          div.className = "medical-condition active";
+          div.innerHTML = `
+              <span class="condition-name"> Diagnosed with : ${condition.name} </span>
+              <span class="condition-status"></span>
+          `;
+          container.appendChild(div);
         }
+      });
 
-        // 🔥 Force reflow
-        void container.offsetHeight;
-        container.style.display = "block";
-
-        // Ensure visibility
-        section.classList.add("visible");
-        section.style.opacity = "1";
-        section.style.maxHeight = "none";
-        section.style.pointerEvents = "auto";
-      }, 200);
-    }
-
-    document.addEventListener("DOMContentLoaded", async () => {
-      const userSession = await supabase.auth.getSession();
-      if (userSession.data?.session) {
-        loadAllUserData(userSession.data.session.user.id);
-      } else {
-        console.error("No active session");
+      // Add medical notes if available
+      if (medicalInfo.notes) {
+        const notesDiv = document.createElement("div");
+        notesDiv.classList.add("notes-section");
+        notesDiv.innerHTML = `
+          <h4>Additional Notes</h4>
+          <p>${medicalInfo.notes}</p>
+        `;
+        container.appendChild(notesDiv);
       }
-    });
-    console.log(document.querySelector("#medical-history-section").classList);
 
-    // emergwency constcts
-    supabase
-      .from("emergency_contacts")
-      .select("*")
-      .eq("user_id", user_id)
-      .single();
+      // Add the timeline elements back after clearing
+      const timelineDiv = document.createElement("div");
+      timelineDiv.className = "timeline";
+      timelineDiv.innerHTML = `
+        <div class="timeline-item">
+          <div class="timeline-date">2024-01-15</div>
+          <div class="timeline-title">Routine Checkup</div>
+          <div class="timeline-description">
+            All vitals normal. Recommended continued exercise regimen.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2023-11-20</div>
+          <div class="timeline-title">Minor Ankle Sprain</div>
+          <div class="timeline-description">
+            R.I.C.E. treatment prescribed. Follow-up in 2 weeks.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2023-08-05</div>
+          <div class="timeline-title">Annual Physical</div>
+          <div class="timeline-description">
+            Blood work showed slightly elevated cholesterol. Started on
+            Atorvastatin.
+          </div>
+        </div>
+      `;
+      container.appendChild(timelineDiv);
+    }
 
     function updateEmergencyContacts(emergencyContacts) {
       const container = document.querySelector(
@@ -632,7 +628,6 @@
       });
     }
 
-    // lifestyle
     function updateLifestyleInfo(lifestyle) {
       const container = document.querySelector(
         "#lifestyle-section .sidebar-section-content"
@@ -658,39 +653,21 @@
               lifestyle.exercise ? "Yes 🏋️" : "No ❌"
             }</span>
         </div>
-    `;
+      `;
     }
 
-    // function updateMedications(medications) {
-    //   const container = document.querySelector(
-    //     "#medications-section .sidebar-section-content"
-    //   );
-
-    //   if (!container) return;
-
-    //   if (!medications || medications.length === 0) {
-    //     container.innerHTML =
-    //       '<div class="no-medications">No current medications</div>';
-    //     return;
-    //   }
-
-    //   const medList = Array.isArray(medications)
-    //     ? medications
-    //     : medications.split(",");
-
-    //   container.innerHTML = medList
-    //     .map(
-    //       (med) => `
-    //             <div class="medication-item">
-    //                 <div>
-    //                     <div class="medication-name">${med.trim()}</div>
-    //                     <div class="medication-schedule">As prescribed</div>
-    //                 </div>
-    //                 <div class="next-dose">Track your doses</div>
-    //             </div>
-    //         `
-    //     )
-    //     .join("");
-    // }
+    // Handle window resize events for chart responsiveness
+    window.addEventListener('resize', function() {
+      const ecgChart = echarts.getInstanceByDom(document.getElementById("ecgChart"));
+      const spo2Chart = echarts.getInstanceByDom(document.getElementById("spo2Chart"));
+      
+      if (ecgChart) {
+        ecgChart.resize();
+      }
+      
+      if (spo2Chart) {
+        spo2Chart.resize();
+      }
+    });
   </script>
 </html>

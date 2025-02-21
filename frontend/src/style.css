@@ -476,36 +476,3 @@ body {
     grid-template-columns: 1fr;
   }
 }
-/* side bat */
-/* Reset all sidebar sections to be visible by default */
-.sidebar > .sidebar-section {
-  display: block;
-  max-height: none;
-  opacity: 1;
-  pointer-events: auto;
-  margin-bottom: 2rem;
-  transition: opacity 0.3s ease, max-height 0.3s ease;
-}
-
-/* Only hide sections when specifically marked as hidden */
-.sidebar > .sidebar-section.hidden {
-  display: none;
-  max-height: 0;
-  opacity: 0;
-  pointer-events: none;
-  margin: 0;
-}
-
-/* Ensure medical history section is always visible */
-.sidebar-section.medical-history {
-  display: block !important;
-  max-height: none !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Remove conflicting visibility rules */
-.sidebar-section:not(:first-child) {
-  display: block;
-}
-
