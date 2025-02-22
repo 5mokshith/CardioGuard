@@ -4,179 +4,180 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Health Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
-    <link rel="stylesheet" href="src/style.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script type="module" src="./src/scripts/main.js"></script>
+    <script type="module" src="src/scripts/auth.js" defer></script>
+    <link rel="stylesheet" href="src/style.css" />
   </head>
+
   <body>
-    <a href="src/markup/sign-up.html">sign up</a>
-    <div class="header">
-      <h1>Health Dashboard</h1>
-      <div class="user-info" id="userProfile">
-        <div class="user-avatar">🌚</div>
-        <span>John Cena</span>
-      </div>
-    </div>
-
-    
-    </div>
-
-    <div class="grids">
-      <div class="dashboard-grid">
-        <div class="metric-card">
-          <div class="metric-title">Heart Rate</div>
-          <div class="metric-value"><span id="heartRate">75</span> BPM</div>
-          <div class="status">Normal</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-title">SpO2</div>
-          <div class="metric-value"><span id="spo2">98</span>%</div>
-          <div class="status">Normal</div>
-        </div>
-      </div>
-      <div class="charts-grid">
-        <div
-          class="chart-card"
-          id="ecgChart"
-          style="width: 100%; height: 300px"
-        ></div>
-        <div
-          class="chart-card"
-          id="spo2Chart"
-          style="width: 100%; height: 300px"
-        ></div>
-      </div>
-    </div>
-
-    <div
-      class="history"
-      style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px"
-    >
-      <div class="history-card">
-        <h3>History Log</h3>
-        <table class="history-table">
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>Heart Rate</th>
-              <th>SpO2</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="historyTableBody"></tbody>
-        </table>
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2>Patient Portal</h2>
+        <button class="close-sidebar" id="closeSidebar">&times;</button>
       </div>
 
-      <div class="right-column">
-        <div class="card">
-          <button class="btn emergency-btn emergency-services">
-            Emergency Services
-          </button>
-          <button class="btn emergency-btn call-doctor">Call Doctor</button>
+      <!-- Navigation menu - always visible -->
+      <div class="sidebar-section sidebar-nav-container visible">
+        <div class="profile-avatar">👩‍🦱</div>
+        <h3 style="text-align: center; margin-bottom: 1rem"></h3>
+
+        <ul class="sidebar-nav">
+          <li class="sidebar-nav-item" data-section="personal-info">
+            <span class="nav-icon">👤</span> Profile
+          </li>
+          <li class="sidebar-nav-item" data-section="health-data">
+            <span class="nav-icon">📊</span> Health Data
+          </li>
+          <li class="sidebar-nav-item" data-section="emergency-contacts">
+            <span class="nav-icon">📞</span> Emergency Contacts
+          </li>
+          <li class="sidebar-nav-item" data-section="medical-history">
+            <span class="nav-icon">📜</span> Medical History
+          </li>
+          <li class="sidebar-nav-item" data-section="lifestyle">
+            <span class="nav-icon">🏋️</span> Lifestyle
+          </li>
+          <li class="sidebar-nav-item" data-section="settings">
+            <span class="nav-icon">⚙️</span> Settings
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section" id="personal-info-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">👤</span> Personal Info
+        </h3>
+        <div class="sidebar-section-content"></div>
+      </div>
+
+      <div class="sidebar-section" id="lifestyle-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">🏋️</span> Lifestyle
+        </h3>
+        <div class="sidebar-section-content"></div>
+      </div>
+
+      <div class="sidebar-section" id="emergency-contacts-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">📞</span> Emergency Contacts
+        </h3>
+        <div class="sidebar-section-content"></div>
+      </div>
+
+      <div class="sidebar-section" id="medical-history-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">📜</span> Medical History
+        </h3>
+        <div class="sidebar-section-content">
+          <div class="timeline">
+            <div class="timeline-item"></div>
+          </div>
         </div>
       </div>
+
+      <div class="sidebar-section" id="health-data-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">📊</span> Health Data
+        </h3>
+        <div class="sidebar-section-content">
+          <div class="data-item">
+            <span class="data-label">Average Heart Rate</span>
+            <span class="data-value">72 BPM</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Average SpO2</span>
+            <span class="data-value">98%</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Latest Blood Pressure</span>
+            <span class="data-value">120/80 mmHg</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section" id="settings-section">
+        <h3 class="sidebar-section-title">
+          <span class="nav-icon">⚙️</span> Settings
+        </h3>
+        <div class="sidebar-section-content">
+          <div class="data-item">
+            <span class="data-label">Notifications</span>
+            <span class="data-value">Enabled</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Data Sharing</span>
+            <span class="data-value">Limited</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Theme</span>
+            <span class="data-value">Dark</span>
+            
+          </div>
+          <a href="src/markup/sign-up.html"><button id="go-back">sign-out</button></a>
+        </div>
+      </div>
     </div>
 
-    <script>
-      // Initialize ECG Chart
-      var ecgChart = echarts.init(document.getElementById("ecgChart"));
-      var ecgData = [];
-      for (var i = 0; i < 50; i++) {
-        ecgData.push([i, Math.sin(i / 5) * 10 + Math.random() * 2]);
-      }
-      var ecgOption = {
-        title: { text: "ECG Waveform" },
-        xAxis: { type: "category" },
-        yAxis: { type: "value" },
-        series: [{ type: "line", data: ecgData }],
-      };
-      ecgChart.setOption(ecgOption);
+    <!-- Main Content -->
+    <div class="content-wrapper" id="contentWrapper">
+      <div class="header">
+        <h1>Health Dashboard</h1>
+        <div class="user-info" id="userProfile">
+          <div class="user-avatar">🌚</div>
+          <span></span>
+        </div>
+      </div>
 
-      // Initialize SpO2 Chart
-      var spo2Chart = echarts.init(document.getElementById("spo2Chart"));
-      var spo2Data = [];
-      for (var i = 0; i < 50; i++) {
-        spo2Data.push([i, 95 + Math.random() * 3]);
-      }
-      var spo2Option = {
-        title: { text: "SpO2 Levels" },
-        xAxis: { type: "category" },
-        yAxis: { type: "value" },
-        series: [{ type: "line", data: spo2Data }],
-      };
-      spo2Chart.setOption(spo2Option);
+      <div class="grids">
+        <div class="dashboard-grid">
+          <div class="metric-card">
+            <div class="metric-title">Heart Rate</div>
+            <div class="metric-value"><span id="heartRate">75</span> BPM</div>
+            <div class="status normal">Normal</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">SpO2</div>
+            <div class="metric-value"><span id="spo2">98</span>%</div>
+            <div class="status normal">Normal</div>
+          </div>
+        </div>
+        <div class="charts-grid">
+          <div
+            class="chart-card"
+            id="ecgChart"
+            style="width: 100%; height: 300px"
+          ></div>
+          <div
+            class="chart-card"
+            id="spo2Chart"
+            style="width: 100%; height: 300px"
+          ></div>
+        </div>
+      </div>
 
-      // Populate history log with sample data
-      document.addEventListener("DOMContentLoaded", function () {
-        var sampleHistory = [
-          {
-            timestamp: "2025-02-19 10:00",
-            heartRate: 75,
-            spo2: 98,
-            status: "Normal",
-          },
-          {
-            timestamp: "2025-02-19 10:05",
-            heartRate: 80,
-            spo2: 97,
-            status: "Normal",
-          },
-          {
-            timestamp: "2025-02-19 10:10",
-            heartRate: 72,
-            spo2: 99,
-            status: "Normal",
-          },
-          {
-            timestamp: "2025-02-19 10:15",
-            heartRate: 85,
-            spo2: 96,
-            status: "Elevated",
-          },
-        ];
-        const table = document.querySelector(".history-table");
-        sampleHistory.forEach((entry) => {
-          console.log(entry.heartRate);
-          var row = document.createElement("tr");
-          row.innerHTML = `
-                <td>${entry.timestamp}</td>
-                <td>${entry.heartRate}</td>
-                <td>${entry.spo2}</td>
-                <td>${entry.status}</td>
-            `;
-          historyTableBody.appendChild(row);
-        });
-      });
-
-
-      // Open user profile form
-const userProfile = document.getElementById('userProfile');
-const profileInfo = document.createElement('div');
-
-profileInfo.className = 'expanded-profile hidden';
-profileInfo.innerHTML = `
-    <div class="profile-details">
-        <p><strong>Name:</strong> John Cena</p>
-        <p><strong>Age:</strong> 46</p>
-        <p><strong>Blood Group:</strong> O+</p>
-        <p><strong>Medical History:</strong> No major issues</p>
+      <div class="history">
+        <div class="right-column">
+          <div class="card">
+            <button
+              class="emergency-btn emergency-services"
+              onclick="window.location.href='tel:108'"
+            >
+              Emergency Services 🚨
+            </button>
+            <button class="emergency-btn call-doctor">Call Doctor 🧑‍⚕️</button>
+          </div>
+        </div>
+      </div>
     </div>
-`;
 
-userProfile.appendChild(profileInfo);
-
-userProfile.addEventListener('click', function(e) {
-    e.stopPropagation();
-    profileInfo.classList.toggle('hidden');
-});
-
-document.addEventListener('click', function(e) {
-    if (!userProfile.contains(e.target)) {
-        profileInfo.classList.add('hidden');
-    }
-});
-    </script>
+    <div id="overlay" class="modal-overlay"></div>
   </body>
 </html>
