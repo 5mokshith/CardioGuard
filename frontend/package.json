@@ -1,18 +1,14 @@
 {
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "vite": "^6.1.0"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.48.1",
-    "dotenv": "^16.4.7"
-  }
+    "name": "vite-app",
+    "version": "1.0.0",
+    "description": "A Vite project",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "serve": "vite preview"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "vite": "^4.0.0"
+    }
 }
