@@ -119,9 +119,10 @@
           <div class="data-item">
             <span class="data-label">Theme</span>
             <span class="data-value">Dark</span>
-            
           </div>
-          <a href="src/markup/sign-up.html"><button id="go-back">sign-out</button></a>
+          <a href="src/markup/sign-up.html"
+            ><button id="go-back">sign-out</button></a
+          >
         </div>
       </div>
     </div>
@@ -153,12 +154,12 @@
           <div
             class="chart-card"
             id="ecgChart"
-            style="width: 100%; height: 300px"
+            style="width: 100%; height: 28rem"
           ></div>
           <div
-            class="chart-card"
+            class="chart-card"  
             id="spo2Chart"
-            style="width: 100%; height: 300px"
+            style="width: 100%; height: 28rem "
           ></div>
         </div>
       </div>
@@ -173,6 +174,20 @@
               Emergency Services 🚨
             </button>
             <button class="emergency-btn call-doctor">Call Doctor 🧑‍⚕️</button>
+          </div>
+        </div>
+        <div class="grids">
+       
+          <!-- Add the new location grid here -->
+          <div class="location-grid">
+            <div class="location-card" id="locationDisplay">
+              <div class="metric-title">Your Current Location 📍</div>
+              <div class="location-content">
+                <div class="loading-status">
+                  <span class="status normal">Fetching location...</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

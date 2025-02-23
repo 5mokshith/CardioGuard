@@ -46,7 +46,7 @@ export async function userSignIn(email, password) {
         email: email,
         password: password
     });
-
+    console.log('User signed in:', data);
     if (error) {
         console.error('Error signing in:', error);
         return null;

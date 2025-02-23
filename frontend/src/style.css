@@ -289,6 +289,7 @@ body {
   grid-template-columns: 2fr 1fr;
   margin-bottom: 1.5rem;
   gap: 1.3rem;
+  color: white;
 }
 
 .charts-grid > .chart-card {
@@ -374,7 +375,7 @@ body {
 /* History section */
 .history {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
@@ -407,7 +408,7 @@ body {
   backdrop-filter: blur(var(--glass-blur));
   border-radius: 1rem;
   padding: 1.25rem;
-  width: 100%;
+  width: auto;
 }
 
 .history > .right-column > .card > .emergency-btn {
@@ -475,4 +476,52 @@ body {
   background: none;
   border: none;
   padding: 0.5rem 0;
+}
+
+/* geoloaction */
+.location-grid {
+  margin-bottom: 1.5rem;
+}
+
+.location-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: 1rem;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.location-title {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.location-content {
+  font-size: 1rem;
+}
+
+.location-loading {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.location-error {
+  color: var(--accent-red);
+  font-size: 0.875rem;
+}
+
+.location-address {
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+.location-coordinates {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+.metric-title{
+  margin-bottom: 2rem;
 }

@@ -404,7 +404,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 // Handle window resize events for chart responsiveness
 window.addEventListener("resize", function () {
   const ecgChart = echarts.getInstanceByDom(
-    document.getElementById("ecgChart")
+    document.getElementById("ecgChart") 
   );
   const spo2Chart = echarts.getInstanceByDom(
     document.getElementById("spo2Chart")
@@ -418,5 +418,191 @@ window.addEventListener("resize", function () {
     spo2Chart.resize();
   }
 });
+//geoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooloaction 
+// Check if geolocation is supported
+if ("geolocation" in navigator) {
+  // Get current position
+  navigator.geolocation.getCurrentPosition(
+    // Success callback
+    async (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const accuracy = position.coords.accuracy;
+      
+      console.log(`Location: ${latitude}, ${longitude}`);
+      console.log(`Accuracy: ${accuracy} meters`);
 
+      // Update the location display with address information
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
+          {
+            headers: {
+              'Accept': 'application/json',
+              'User-Agent': 'HealthDashboard'
+            }
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch address');
+        }
+
+        const data = await response.json();
+        const locationContent = document.querySelector('.location-content');
+        
+        if (locationContent) {
+          // Create a formatted address with all available components
+          const addressParts = [];
+          
+          // Add street number and road
+          if (data.address.house_number) addressParts.push(data.address.house_number);
+          if (data.address.road) addressParts.push(data.address.road);
+          
+          // Add neighborhood/suburb
+          if (data.address.suburb || data.address.neighbourhood) {
+            addressParts.push(data.address.suburb || data.address.neighbourhood);
+          }
+          
+          // Add city/town/village
+          if (data.address.city || data.address.town || data.address.village) {
+            addressParts.push(data.address.city || data.address.town || data.address.village);
+          }
+          
+          // Add state and postal code
+          if (data.address.state) addressParts.push(data.address.state);
+          if (data.address.postcode) addressParts.push(data.address.postcode);
+
+          // Create the HTML content
+          locationContent.innerHTML = `
+            <div class="location-address">
+              <div class="street-address">${addressParts.join(', ')}</div>
+            </div>
+            <div class="location-coordinates">
+              Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+              <br>Accuracy: ${accuracy.toFixed(0)} meters
+            </div>
+          `;
+
+          console.log('Address data:', data.address); // For debugging
+        }
+      } catch (error) {
+        console.error('Error fetching address:', error);
+        const locationContent = document.querySelector('.location-content');
+        if (locationContent) {
+          locationContent.innerHTML = `
+            <div class="location-error">
+              Error fetching address. Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+            </div>
+          `;
+        }
+      }
+    },
+    // Error callback
+    (error) => {
+      const locationContent = document.querySelector('.location-content');
+      if (locationContent) {
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            locationContent.innerHTML = '<div class="location-error">Location access denied. Please enable location services.</div>';
+            console.error("User denied geolocation permission");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            locationContent.innerHTML = '<div class="location-error">Location information unavailable</div>';
+            console.error("Location information unavailable");
+            break;
+          case error.TIMEOUT:
+            locationContent.innerHTML = '<div class="location-error">Location request timed out</div>';
+            console.error("Location request timed out");
+            break;
+          default:
+            locationContent.innerHTML = '<div class="location-error">An unknown error occurred</div>';
+            console.error("An unknown error occurred");
+        }
+      }
+    },
+    // Options
+    {
+      enableHighAccuracy: true,  // Use GPS if available
+      timeout: 5000,            // Time to wait for response (ms)
+      maximumAge: 0            // Don't use cached position
+    }
+  );
+  
+  // For continuous location updates with the same detailed address handling
+  const watchId = navigator.geolocation.watchPosition(
+    async position => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      
+      console.log(`Updated location: ${latitude}, ${longitude}`);
+      
+      // Update the display with new location data
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
+          {
+            headers: {
+              'Accept': 'application/json',
+              'User-Agent': 'HealthDashboard'
+            }
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch address');
+        }
+
+        const data = await response.json();
+        const locationContent = document.querySelector('.location-content');
+        
+        if (locationContent) {
+          // Create a formatted address with all available components
+          const addressParts = [];
+          
+          // Add street number and road
+          if (data.address.house_number) addressParts.push(data.address.house_number);
+          if (data.address.road) addressParts.push(data.address.road);
+          
+          // Add neighborhood/suburb
+          if (data.address.suburb || data.address.neighbourhood) {
+            addressParts.push(data.address.suburb || data.address.neighbourhood);
+          }
+          
+          // Add city/town/village
+          if (data.address.city || data.address.town || data.address.village) {
+            addressParts.push(data.address.city || data.address.town || data.address.village);
+          }
+          
+          // Add state and postal code
+          if (data.address.state) addressParts.push(data.address.state);
+          if (data.address.postcode) addressParts.push(data.address.postcode);
+
+          locationContent.innerHTML = `
+            <div class="location-address">
+              <div class="street-address">${addressParts.join(', ')}</div>
+            </div>
+            <div class="location-coordinates">
+              Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error("Error updating location:", error);
+      }
+    },
+    error => {
+      console.error("Error watching position:", error);
+    }
+  );
+  
+  // To stop watching location:
+  // navigator.geolocation.clearWatch(watchId);
+} else {
+  console.error("Geolocation is not supported by this browser");
+  const locationContent = document.querySelector('.location-content');
+  if (locationContent) {
+    locationContent.innerHTML = '<div class="location-error">Geolocation is not supported by this browser</div>';
+  }
+}
 export { loadAllUserData, initializeSupabase };
