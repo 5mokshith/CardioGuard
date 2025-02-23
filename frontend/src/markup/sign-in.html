@@ -1,53 +1,75 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../CSS/sign-in.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../CSS/sign-in.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script src="../scripts/auth.js" type="module" defer></script>
     <script type="module" src="../scripts/signIn.js" defer></script>
     <title>Signin page</title>
-</head>
-<body>
+  </head>
+  <body>
     <main>
-        <div class="container">
-            <form method="post" id="sign-in-form">
-                <h2>Sign in</h2>
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder=" " required>
-                </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" placeholder=" " required>
-                </div>
-                <button type="submit" id="sign-in-btn">Sign in</button>
-                <p>Not a member? <a href="sign-up.html">Sign up</a></p>
-            </form>
-        </div>
-    </main> 
-</body>
-<script>
-document.querySelectorAll(".input-group input").forEach((input) => {
-    input.addEventListener("focus", function () {
+      <div class="container">
+        <form method="post" id="sign-in-form">
+          <h2>Sign in</h2>
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder=" "
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder=" "
+              required
+            />
+          </div>
+          <button type="submit" id="sign-in-btn">Sign in</button>
+          <p>Not a member? <a href="sign-up.html">Sign up</a></p>
+        </form>
+      </div>
+    </main>
+  </body>
+  <script>
+    document.querySelectorAll(".input-group input").forEach((input) => {
+      input.addEventListener("focus", function () {
         let label = this.previousElementSibling;
         label.style.transform = "translateY(-0.4rem)";
         label.style.fontSize = "0.9rem";
-    });
+      });
 
-    input.addEventListener("blur", function () {
+      input.addEventListener("blur", function () {
         let label = this.previousElementSibling;
         if (this.value.trim() === "") {
-            label.style.transform = "translateY(1rem)";
-            label.style.fontSize = "1rem";
+          label.style.transform = "translateY(1rem)";
+          label.style.fontSize = "1rem";
         }
+      });
     });
-});
-
-</script>
+  </script>
 </html>

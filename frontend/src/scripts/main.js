@@ -1,28 +1,5 @@
-import { supabase } from './auth.js';
-// Remove this import since loadAllUserData is defined in this file
-// import { loadAllUserData } from './sendUserData.js';
-import { initializeWebSocket, initializeCharts } from './webSocket.js';
-
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const { data: sessionData, error } = await supabase.auth.getSession();
-        
-        if (error || !sessionData?.session) {
-            console.error('No active session');
-            window.location.href = '/src/markup/sign-up.html';
-            return;
-        }
-
-        await loadAllUserData(sessionData.session.user.id);
-        
-        // Initialize charts and WebSocket connection
-        initializeCharts();
-        initializeWebSocket();
-
-    } catch (error) {
-        console.error('Error initializing application:', error);
-    }
-});
+import { supabase } from "./auth.js";
+import { showToast, toastTypes } from "../scripts/toastUtils.js";
 
 function initializeSupabase() {
   return supabase;
@@ -57,6 +34,7 @@ async function getDoctorContact(userId) {
     return contacts[0].phone;
   } catch (error) {
     console.error("Error fetching doctor contact:", error);
+    showToast("Could not fetch doctor contact information", toastTypes.ERROR);
     return null;
   }
 }
@@ -100,6 +78,7 @@ async function loadAllUserData(user_id) {
     updateEmergencyContacts(emergencyContactsData);
   } catch (error) {
     console.error("Error in loadAllUserData:", error);
+    showToast("Failed to load profile data", toastTypes.ERROR);
     throw error;
   }
 }
@@ -529,10 +508,15 @@ if ("geolocation" in navigator) {
         switch(error.code) {
           case error.PERMISSION_DENIED:
             locationContent.innerHTML = '<div class="location-error">Location access denied. Please enable location services.</div>';
+             showToast(
+               "Location access denied. Please enable location services.",
+               toastTypes.WARNING
+             );
             console.error("User denied geolocation permission");
             break;
           case error.POSITION_UNAVAILABLE:
             locationContent.innerHTML = '<div class="location-error">Location information unavailable</div>';
+             showToast("Location information unavailable", toastTypes.ERROR);
             console.error("Location information unavailable");
             break;
           case error.TIMEOUT:
