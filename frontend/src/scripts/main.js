@@ -1,4 +1,28 @@
-import { supabase } from "./auth.js";
+import { supabase } from './auth.js';
+// Remove this import since loadAllUserData is defined in this file
+// import { loadAllUserData } from './sendUserData.js';
+import { initializeWebSocket, initializeCharts } from './webSocket.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const { data: sessionData, error } = await supabase.auth.getSession();
+        
+        if (error || !sessionData?.session) {
+            console.error('No active session');
+            window.location.href = '/src/markup/sign-up.html';
+            return;
+        }
+
+        await loadAllUserData(sessionData.session.user.id);
+        
+        // Initialize charts and WebSocket connection
+        initializeCharts();
+        initializeWebSocket();
+
+    } catch (error) {
+        console.error('Error initializing application:', error);
+    }
+});
 
 function initializeSupabase() {
   return supabase;
