@@ -1,5 +1,30 @@
-import { supabase } from "./auth.js";
-import { showToast, toastTypes } from "../scripts/toastUtils.js";
+import { supabase } from './auth.js';
+import { displayMessage } from './utils.js';
+// Remove this import since loadAllUserData is defined in this file
+// import { loadAllUserData } from './sendUserData.js';
+import { initializeWebSocket, initializeCharts } from './webSocket.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const { data: sessionData, error } = await supabase.auth.getSession();
+        
+        if (error || !sessionData?.session) {
+            console.error('No active session');
+            window.location.href = '../../index.html';
+            return;
+        }
+
+        await loadAllUserData(sessionData.session.user.id);
+        
+        // Initialize charts and WebSocket connection
+        initializeCharts();
+        initializeWebSocket();
+
+    } catch (error) {
+        displayMessage('Error initializing application', true);
+        console.error('Error initializing application:', error);
+    }
+});
 
 function initializeSupabase() {
   return supabase;
@@ -33,8 +58,8 @@ async function getDoctorContact(userId) {
 
     return contacts[0].phone;
   } catch (error) {
+    displayMessage("Error fetching doctor contact", true);
     console.error("Error fetching doctor contact:", error);
-    showToast("Could not fetch doctor contact information", toastTypes.ERROR);
     return null;
   }
 }
@@ -66,6 +91,7 @@ async function loadAllUserData(user_id) {
       !lifestyle ||
       !Array.isArray(emergencyContactsData)
     ) {
+      displayMessage("Error fetching user data", true);
       throw new Error(
         "Could not fetch user data or emergencyContacts is not an array"
       );
@@ -77,8 +103,8 @@ async function loadAllUserData(user_id) {
     updateLifestyleInfo(lifestyle);
     updateEmergencyContacts(emergencyContactsData);
   } catch (error) {
+    displayMessage("Error loading user data", true);
     console.error("Error in loadAllUserData:", error);
-    showToast("Failed to load profile data", toastTypes.ERROR);
     throw error;
   }
 }
@@ -313,6 +339,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           error,
         } = await supabase.auth.getSession();
         if (error || !session) {
+          displayMessage("No active session", true);
           throw new Error("No active session");
         }
 
@@ -320,11 +347,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (phoneNumber) {
           window.location.href = `tel:${phoneNumber}`;
         } else {
+          displayMessage(
+            "No doctor contact number found. Please add emergency contacts in your profile.",
+            true
+          );
           alert(
             "No doctor contact number found. Please add emergency contacts in your profile."
           );
         }
       } catch (error) {
+        displayMessage("Error making doctor call", true);
         console.error("Error making doctor call:", error);
         alert("Unable to make call. Please check your emergency contacts.");
       }
@@ -350,7 +382,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       if (!session) {
         console.error("No active session");
-        window.location.href = "/src/markup/sign-up.html";
+        window.location.href = "../../index.html";
         return;
       }
 
@@ -369,6 +401,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     } catch (error) {
       console.error("Error loading profile:", error);
+      displayMessage("Error loading profile data", true);
       alert("Error loading profile data");
     }
   });
@@ -402,12 +435,16 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     });
   });
+
+  getCurrentLocation();
+  // Update location every 5 minutes
+  setInterval(getCurrentLocation, 300000);
 });
 
 // Handle window resize events for chart responsiveness
 window.addEventListener("resize", function () {
   const ecgChart = echarts.getInstanceByDom(
-    document.getElementById("ecgChart") 
+    document.getElementById("ecgChart")
   );
   const spo2Chart = echarts.getInstanceByDom(
     document.getElementById("spo2Chart")
@@ -421,196 +458,69 @@ window.addEventListener("resize", function () {
     spo2Chart.resize();
   }
 });
-//geoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooloaction 
-// Check if geolocation is supported
-if ("geolocation" in navigator) {
-  // Get current position
-  navigator.geolocation.getCurrentPosition(
-    // Success callback
-    async (position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const accuracy = position.coords.accuracy;
-      
-      console.log(`Location: ${latitude}, ${longitude}`);
-      console.log(`Accuracy: ${accuracy} meters`);
 
-      // Update the location display with address information
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
-          {
-            headers: {
-              'Accept': 'application/json',
-              'User-Agent': 'HealthDashboard'
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch address');
-        }
-
-        const data = await response.json();
-        const locationContent = document.querySelector('.location-content');
-        
-        if (locationContent) {
-          // Create a formatted address with all available components
-          const addressParts = [];
-          
-          // Add street number and road
-          if (data.address.house_number) addressParts.push(data.address.house_number);
-          if (data.address.road) addressParts.push(data.address.road);
-          
-          // Add neighborhood/suburb
-          if (data.address.suburb || data.address.neighbourhood) {
-            addressParts.push(data.address.suburb || data.address.neighbourhood);
-          }
-          
-          // Add city/town/village
-          if (data.address.city || data.address.town || data.address.village) {
-            addressParts.push(data.address.city || data.address.town || data.address.village);
-          }
-          
-          // Add state and postal code
-          if (data.address.state) addressParts.push(data.address.state);
-          if (data.address.postcode) addressParts.push(data.address.postcode);
-
-          // Create the HTML content
-          locationContent.innerHTML = `
-            <div class="location-address">
-              <div class="street-address">${addressParts.join(', ')}</div>
-            </div>
-            <div class="location-coordinates">
-              Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-              <br>Accuracy: ${accuracy.toFixed(0)} meters
-            </div>
-          `;
-
-          console.log('Address data:', data.address); // For debugging
-        }
-      } catch (error) {
-        console.error('Error fetching address:', error);
-        const locationContent = document.querySelector('.location-content');
-        if (locationContent) {
-          locationContent.innerHTML = `
-            <div class="location-error">
-              Error fetching address. Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-            </div>
-          `;
-        }
-      }
-    },
-    // Error callback
-    (error) => {
-      const locationContent = document.querySelector('.location-content');
-      if (locationContent) {
-        switch(error.code) {
-          case error.PERMISSION_DENIED:
-            locationContent.innerHTML = '<div class="location-error">Location access denied. Please enable location services.</div>';
-             showToast(
-               "Location access denied. Please enable location services.",
-               toastTypes.WARNING
-             );
-            console.error("User denied geolocation permission");
-            break;
-          case error.POSITION_UNAVAILABLE:
-            locationContent.innerHTML = '<div class="location-error">Location information unavailable</div>';
-             showToast("Location information unavailable", toastTypes.ERROR);
-            console.error("Location information unavailable");
-            break;
-          case error.TIMEOUT:
-            locationContent.innerHTML = '<div class="location-error">Location request timed out</div>';
-            console.error("Location request timed out");
-            break;
-          default:
-            locationContent.innerHTML = '<div class="location-error">An unknown error occurred</div>';
-            console.error("An unknown error occurred");
-        }
-      }
-    },
-    // Options
-    {
-      enableHighAccuracy: true,  // Use GPS if available
-      timeout: 5000,            // Time to wait for response (ms)
-      maximumAge: 0            // Don't use cached position
-    }
-  );
+// Add these functions to handle location display
+async function updateLocationDisplay(latitude, longitude) {
+  const locationDisplay = document.getElementById('locationDisplay');
+  const loadingStatus = locationDisplay.querySelector('.loading-status');
   
-  // For continuous location updates with the same detailed address handling
-  const watchId = navigator.geolocation.watchPosition(
-    async position => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+  try {
+      // Reverse geocoding using OpenStreetMap Nominatim API
+      const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      );
+      const data = await response.json();
       
-      console.log(`Updated location: ${latitude}, ${longitude}`);
+      // Update the location display
+      loadingStatus.innerHTML = `
+          <div class="location-details">
+              <p><strong>Address:</strong> ${data.display_name}</p>
+              <p><strong>Coordinates:</strong> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}</p>
+          </div>
+          <span class="status normal">Location Updated</span>
+      `;
       
-      // Update the display with new location data
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
-          {
-            headers: {
-              'Accept': 'application/json',
-              'User-Agent': 'HealthDashboard'
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch address');
-        }
-
-        const data = await response.json();
-        const locationContent = document.querySelector('.location-content');
-        
-        if (locationContent) {
-          // Create a formatted address with all available components
-          const addressParts = [];
-          
-          // Add street number and road
-          if (data.address.house_number) addressParts.push(data.address.house_number);
-          if (data.address.road) addressParts.push(data.address.road);
-          
-          // Add neighborhood/suburb
-          if (data.address.suburb || data.address.neighbourhood) {
-            addressParts.push(data.address.suburb || data.address.neighbourhood);
-          }
-          
-          // Add city/town/village
-          if (data.address.city || data.address.town || data.address.village) {
-            addressParts.push(data.address.city || data.address.town || data.address.village);
-          }
-          
-          // Add state and postal code
-          if (data.address.state) addressParts.push(data.address.state);
-          if (data.address.postcode) addressParts.push(data.address.postcode);
-
-          locationContent.innerHTML = `
-            <div class="location-address">
-              <div class="street-address">${addressParts.join(', ')}</div>
-            </div>
-            <div class="location-coordinates">
-              Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-            </div>
-          `;
-        }
-      } catch (error) {
-        console.error("Error updating location:", error);
-      }
-    },
-    error => {
-      console.error("Error watching position:", error);
-    }
-  );
-  
-  // To stop watching location:
-  // navigator.geolocation.clearWatch(watchId);
-} else {
-  console.error("Geolocation is not supported by this browser");
-  const locationContent = document.querySelector('.location-content');
-  if (locationContent) {
-    locationContent.innerHTML = '<div class="location-error">Geolocation is not supported by this browser</div>';
+      console.log('Address data:', data);
+      return data;
+  } catch (error) {
+      console.error('Error getting location details:', error);
+      loadingStatus.innerHTML = `
+          <span class="status warning">Error fetching location details</span>
+      `;
   }
 }
+
+// Function to get current location
+function getCurrentLocation() {
+  const locationDisplay = document.getElementById('locationDisplay');
+  const loadingStatus = locationDisplay.querySelector('.loading-status');
+  
+  if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+          async (position) => {
+              const { latitude, longitude } = position.coords;
+              console.log('Location:', latitude, longitude);
+              console.log('Accuracy:', position.coords.accuracy, 'meters');
+              
+              await updateLocationDisplay(latitude, longitude);
+          },
+          (error) => {
+              console.error('Error getting location:', error);
+              loadingStatus.innerHTML = `
+                  <span class="status warning">Error getting location: ${error.message}</span>
+              `;
+          },
+          {
+              enableHighAccuracy: true,
+              timeout: 5000,
+              maximumAge: 0
+          }
+      );
+  } else {
+      loadingStatus.innerHTML = `
+          <span class="status warning">Geolocation not supported</span>
+      `;
+  }
+}
+
 export { loadAllUserData, initializeSupabase };

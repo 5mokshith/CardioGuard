@@ -63,5 +63,34 @@ body.addEventListener("mousemove", (e) => {
   body.style.transition = "all 0.5s ease";
 });
 
- 
 
+
+export function displayMessage(message,error = false) {
+  let body = document.body;
+  let messageContainer = document.createElement("div");
+  messageContainer.classList.add("message-container");
+  let messageElement = document.createElement("p");
+  messageElement.innerText = message;
+  messageContainer.append(message);
+  body.appendChild(messageContainer);
+  if(error){
+    messageContainer.style.backgroundColor = "red";
+  }
+  setTimeout(() => {
+    messageContainer.remove();
+  }, 3000);
+}
+
+
+export function showLoadingAnimation() {
+  const loader = document.querySelector('.loader');
+  loader.style.display = "block"
+  loader.dataset.dataActive = "true";
+}
+
+
+export function hideLoadingAnimation() {
+  const loader = document.querySelector('.loader');
+  loader.style.display = "none"
+  loader.dataset.dataActive = "false";
+}

@@ -1,5 +1,3 @@
-// Create a new file: src/scripts/websocket.js
-
 import { supabase } from './auth.js';
 
 let ws = null;
@@ -13,8 +11,13 @@ let ecgData = Array(MAX_DATA_POINTS).fill(0);
 let spo2Data = Array(MAX_DATA_POINTS).fill(95);
 let timeLabels = Array(MAX_DATA_POINTS).fill('');
 
+// Anomaly tracking variables
+let consecutiveAnomalies = 0;
+const ANOMALY_THRESHOLD = 5;
+let lastAlertTime = 0;
+const MIN_ALERT_INTERVAL = 300000; // 5 minutes in milliseconds
+
 export function initializeWebSocket() {
-    // Changed protocol to 'frontend' instead of 'esp'
     ws = new WebSocket('ws://localhost:8765', ['frontend']);
     
     ws.onopen = () => {
@@ -49,7 +52,6 @@ function updateStatus(message, statusType) {
 }
 
 export function initializeCharts() {
-    // Initialize ECG Chart
     ecgChart = echarts.init(document.getElementById('ecgChart'));
     const ecgOption = {
         title: {
@@ -104,7 +106,6 @@ export function initializeCharts() {
     };
     ecgChart.setOption(ecgOption);
 
-    // Initialize SpO2 Chart
     spo2Chart = echarts.init(document.getElementById('spo2Chart'));
     const spo2Option = {
         title: {
@@ -161,6 +162,144 @@ export function initializeCharts() {
     spo2Chart.setOption(spo2Option);
 }
 
+async function createAlert(severity, description, latitude, longitude) {
+    console.log('Starting alert creation with:', {
+        severity,
+        description,
+        latitude,
+        longitude,
+        consecutiveAnomalies
+    });
+
+    try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+            console.error('Session error:', sessionError);
+            return;
+        }
+
+        console.log('Current session user:', session.user.id);
+
+        const currentTime = Date.now();
+        if (currentTime - lastAlertTime < MIN_ALERT_INTERVAL) {
+            console.log(`Alert skipped - Last alert was ${(currentTime - lastAlertTime)/1000} seconds ago`);
+            return;
+        }
+
+        // Get emergency contact for notification (specifically doctor)
+        const { data: contacts, error: contactError } = await supabase
+            .from('emergency_contacts')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .eq('relationship', 'Doctor')
+            .single();
+
+        if (contactError) {
+            console.log('Error fetching emergency contacts:', contactError);
+        } else {
+            console.log('Found emergency contact:', contacts);
+        }
+
+        const alertDescription = contacts 
+            ? `${description}. Doctor contact: ${contacts.name} (${contacts.phone})`
+            : description;
+
+        console.log('Preparing to insert alert with description:', alertDescription);
+
+        // Create the alert object with simplified structure
+        const alertData = {
+            user_id: session.user.id,
+            alert_type: 'ECG_ANOMALY',
+            severity: severity,
+            description: alertDescription,
+            gps_latitude: latitude,
+            gps_longitude: longitude,
+            is_resolved: false
+        };
+
+        console.log('Inserting alert data:', alertData);
+
+        const { data: insertedAlert, error: insertError } = await supabase
+            .from('alerts')
+            .insert([alertData])
+            .select();
+
+        if (insertError) {
+            console.error('Error inserting alert:', insertError);
+            throw insertError;
+        }
+
+        console.log('Alert inserted successfully:', insertedAlert);
+        lastAlertTime = currentTime;
+        consecutiveAnomalies = 0;
+
+        // Trigger visual alert
+        handleAlert({
+            type: 'alert',
+            message: `Medical alert created: ${description}`,
+            severity: severity,
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('Error in createAlert:', error);
+        console.error('Full error object:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code
+        });
+    }
+}
+
+async function handleAnomalyDetection() {
+    consecutiveAnomalies++;
+    console.log(`Consecutive anomalies: ${consecutiveAnomalies}`);
+    
+    if (consecutiveAnomalies >= ANOMALY_THRESHOLD) {
+        if ("geolocation" in navigator) {
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0
+                    });
+                });
+
+                const severity = consecutiveAnomalies >= 10 ? 'high' : 'medium';
+                const description = `ECG anomaly detected ${consecutiveAnomalies} times consecutively. Immediate medical attention may be required.`;
+                
+                await createAlert(
+                    severity,
+                    description,
+                    position.coords.latitude,
+                    position.coords.longitude
+                );
+
+            } catch (error) {
+                console.error('Error getting location:', error);
+                // Create alert without location data
+                await createAlert(
+                    'high',
+                    `ECG anomaly detected ${consecutiveAnomalies} times consecutively (location unavailable). Immediate medical attention may be required.`,
+                    null,
+                    null
+                );
+            }
+        } else {
+            // Create alert without location if geolocation is not supported
+            await createAlert(
+                'high',
+                `ECG anomaly detected ${consecutiveAnomalies} times consecutively (location unavailable). Immediate medical attention may be required.`,
+                null,
+                null
+            );
+        }
+    }
+}
+
 function handleWebSocketMessage(event) {
     try {
         const data = JSON.parse(event.data);
@@ -182,62 +321,37 @@ function updateECGData(data) {
     ecgData.shift();
     ecgData.push(data.value);
     
+    // Update time labels
+    timeLabels.shift();
+    timeLabels.push(new Date().toLocaleTimeString());
+    
     // Update heart rate display
     const heartRateDisplay = document.getElementById('heartRate');
     if (heartRateDisplay) {
-        // Simulate heart rate calculation (this should be replaced with actual calculation)
         const simulatedHeartRate = Math.round(70 + Math.random() * 10);
         heartRateDisplay.textContent = simulatedHeartRate;
     }
 
     // Update chart
     ecgChart?.setOption({
+        xAxis: {
+            data: timeLabels
+        },
         series: [{
             data: ecgData
         }]
     });
 
-    console.log('ECG Data:', data);
-
     // Handle anomaly detection
     if (data.is_anomaly) {
-        handleAlert({
-            type: 'alert',
-            message: 'Anomaly detected in ECG reading',
-            severity: 'high',
-            timestamp: data.timestamp
-        });
+        handleAnomalyDetection();
         updateStatus('Anomaly Detected', 'warning');
     } else {
+        consecutiveAnomalies = 0; // Reset counter when normal reading
         updateStatus('Normal', 'normal');
     }
 }
 
-function handleAlert(alert) {
-    // Create a temporary alert div
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert-popup ${alert.severity}`;
-    alertDiv.textContent = alert.message;
-    
-    // Add to body
-    document.body.appendChild(alertDiv);
-    
-    // Remove after 5 seconds
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 5000);
-
-    // If it's a high severity alert, also trigger the emergency section highlight
-    if (alert.severity === 'high') {
-        const emergencySection = document.querySelector('.emergency-btn.emergency-services');
-        if (emergencySection) {
-            emergencySection.classList.add('highlight');
-            setTimeout(() => {
-                emergencySection.classList.remove('highlight');
-            }, 2000);
-        }
-    }
-}
 
 // Handle window resize
 window.addEventListener('resize', () => {

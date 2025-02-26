@@ -1,5 +1,6 @@
 import { signUpUser, userSignIn, supabase } from './auth.js';
 import { insertUserData } from './sendUserData.js';
+import { showLoadingAnimation, hideLoadingAnimation, displayMessage } from './utils.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const signUpBtn = document.querySelector("#sign-up-btn");
@@ -15,13 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const username = formData.get("username");
 
       try {
+        showLoadingAnimation();
         const session = await signUpUser(email, password, username);
         if (session) {
           transitionToMultiStep();
         }
       } catch (error) {
         console.error("Sign up error:", error);
-        alert("Error during sign up. Please try again.");
+        displayMessage("Error during sign up. Please try again.", true);
+      } finally {
+        hideLoadingAnimation();
       }
     });
   }
@@ -35,13 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = formData.get("password");
 
       try {
+        showLoadingAnimation();
         const session = await userSignIn(email, password);
         if (session) {
-          window.location.replace("/index.html");
+          window.location.replace("src/markup/dashboard.html");
         }
       } catch (error) {
         console.error("Sign in error:", error);
-        alert("Error during sign in. Please try again.");
+        displayMessage("Error during sign in. Please try again.", true);
+      } finally {
+        hideLoadingAnimation();
       }
     });
   }
@@ -62,6 +69,7 @@ let collectedData = {
   lifestyleInfo: {},
   emergencyContacts: []
 };
+
 function updateProgressBar() {
   const progressBar = document.querySelector('.progress-bar');
   const steps = document.querySelectorAll('.step');
@@ -138,10 +146,12 @@ function attachStepEventListeners() {
         } else {
           // Disable button to prevent duplicate submissions
           nextBtn.disabled = true;
+          showLoadingAnimation();
           await submitAllData();
+          hideLoadingAnimation();
         }
       } else {
-        alert("Please fill in all required fields in this section.");
+        displayMessage("Please fill in all required fields in this section.", true);
       }
     });
   }
@@ -232,7 +242,6 @@ function storeStepData() {
   }
 }
 
-
 function preloadStepData(stepAttr) {
   let dataObj;
   if (stepAttr === "data-personal-info") {
@@ -261,7 +270,7 @@ function preloadStepData(stepAttr) {
 async function submitAllData() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    alert("User not authenticated. Please log in again.");
+    displayMessage("User not authenticated. Please log in again.", true);
     return;
   }
   console.log("Submitting data for user:", user.id);
@@ -273,10 +282,10 @@ async function submitAllData() {
     collectedData.emergencyContacts
   );
   if (response.success) {
-    alert("All data successfully submitted!");
-    window.location.replace("/dashboard.html");
+    displayMessage("All data successfully submitted!");
+    window.location.replace("src/markup/dashboard.html");
   } else {
-    alert("Error: " + response.message);
+    displayMessage("Error: " + response.message, true);
   }
 }
 
