@@ -6,13 +6,12 @@
   <title>safe | signup</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="src/style.css" />
   <link rel="stylesheet" href="src/CSS/sign-up.css" />
   <link rel="stylesheet" href="src/CSS/utils.css" />
   <!-- Scripts -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="src/scripts/auth.js" defer></script>
   <script type="module" src="src/scripts/transistion.js" defer></script>
   <script type="module" src="src/scripts/sendUserData.js" defer></script>
@@ -49,7 +48,7 @@
         <button type="submit" id="sign-up-btn">Sign up</button>
         <!-- TODO: add loading state when information is sent to user -->
         <p>
-          Already have an account? <a href="src/markup/sign-in.html">Sign in</a>
+          Already have an account? <a href="./src/markup/sign-in.html">Sign in</a>
         </p>
       </form>
     </div>
@@ -279,14 +278,12 @@
           <p>Submit</p>
         </button>
       </div>
-      
     </div>
-    
   </template>
-  <div class="spinner-overlay">
-  <div class="spinner"></div>
-</div>
-  
+
+  <div class="loader">
+    <div class="spinner"></div>
+  </div>
 
   <!-- Global Script for Label Animations and Toggle Behavior -->
   <script>

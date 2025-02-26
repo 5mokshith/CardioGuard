@@ -52,7 +52,55 @@
     left: 15%;
     transition: all 0.2s ease;
   }
-/* Add to your CSS file */
+  .message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+    z-index: 1000;
+    color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    background-color: #4caf4fe1;
+    width: 15rem;
+    min-width: fit-content;
+    height: 3rem;
+  }
+
+  .loader {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  .loader .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+/* progress bar styles */
 .progress-container {
   position: relative;
   width: 80%;
