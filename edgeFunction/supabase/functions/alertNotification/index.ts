@@ -1,17 +1,4 @@
-// SQL for reference:
-//
-// CREATE TABLE alerts (
-//   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-//   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-//   alert_message TEXT NOT NULL,
-//   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-//   status TEXT CHECK (status IN ('pending', 'sent', 'failed')) DEFAULT 'pending',
-//   notification_sent_at TIMESTAMP WITH TIME ZONE,
-//   attempts INT DEFAULT 0,
-//   last_error TEXT,
-//   preferred_notification_method TEXT CHECK (preferred_notification_method IN ('email', 'sms')) DEFAULT 'email'
-// );
-// ALTER TABLE alerts ADD COLUMN IF NOT EXISTS notifications_sent BOOLEAN DEFAULT false;
+
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
