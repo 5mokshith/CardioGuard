@@ -26,75 +26,134 @@ CardioGuard is built on a multi-layered architecture:
 
 1. **Wearable Sensor Module:**  
    - Captures ECG and SpO₂ data via AD8232 sensors and ESP32.
-   - Transmits data in real time to the cloud.
+   - Transmits data in real time to the cloud via Wi-Fi/Bluetooth.
 
 2. **Cloud Server:**  
-   - Processes incoming sensor data.
-   - Performs machine learning inference using a Random Forest classifier.
+   - Processes incoming sensor data using a Node.js/Python backend.
+   - Performs machine learning inference using a pre-trained Random Forest classifier.
 
 3. **Notification Service:**  
-   - Uses Supabase Edge Functions and Firebase Cloud Messaging to trigger automated alerts when anomalies are detected.
+   - Uses Supabase Edge Functions and Firebase Cloud Messaging (FCM) to trigger alerts when anomalies are detected.
 
 4. **User Interface:**  
-   - Developed as a Progressive Web App (PWA) for real-time data visualization and interaction.
+   - React-based Progressive Web App (PWA) for real-time data visualization and alert management.
 
 ## Installation
 
-Follow these steps to set up the project locally:
+### Prerequisites
+
+- Node.js v16+ and npm
+- Python 3.8+ (for ML model training)
+- Arduino IDE (for ESP32 firmware)
+- Firebase and Supabase accounts
+
+### Frontend Setup
 
 1. **Clone the Repository:**
-
    ```bash
-   git clone https://github.com/5mokshith/frontend-expo.git
-   cd frontend-expo
-Navigate to the Frontend Directory:
-cd frontend
-Install Dependencies:
+   git clone https://github.com/your-username/CardioGuard.git
+   cd CardioGuard/frontend
 
-Make sure you have Node.js installed, then run:
-   ```bash
-   npm install
+
+
+
+   Install Dependencies:
+
+bash
+Copy
+npm install
+Configure Environment Variables:
+Create a .env file with your Firebase and Supabase credentials:
+
+env
+Copy
+VITE_FIREBASE_API_KEY=your_key
+VITE_SUPABASE_URL=your_url
+VITE_SUPABASE_KEY=your_key
 Start the Development Server:
-   ```bash
-   npm run dev
-The application will be available at http://localhost:3000.
 
+bash
+Copy
+npm run dev
+Access the app at http://localhost:3000.
+
+Hardware Setup (ESP32)
+Upload Firmware:
+
+Open CardioGuard/firmware/sensor_module.ino in Arduino IDE.
+
+Install required libraries (AD8232, ESP32 BLE).
+
+Set Wi-Fi credentials in the code.
+
+Upload to ESP32.
+
+Backend & ML Setup
+Navigate to the Backend Directory:
+
+bash
+Copy
+cd ../backend
+Install Python Dependencies:
+
+bash
+Copy
+pip install -r requirements.txt
+Train the ML Model:
+
+bash
+Copy
+python train_model.py
+Start the Server:
+
+bash
+Copy
+node server.js
 Usage
-Access the Application:
-Open the Progressive Web App in your web browser.
+Pair the Sensor Module:
 
-Monitor Health Data:
-View real-time ECG and SpO₂ readings on the dashboard.
+Power on the ESP32 device.
 
-Receive Alerts:
-Configure your alert settings to receive notifications via your preferred channels (email, SMS, push notifications).
+Open the CardioGuard PWA and navigate to Devices > Pair New Device.
 
-Review Historical Data:
-Access system logs and historical data for detailed analysis.
+Monitor Real-Time Data:
+
+View live ECG and SpO₂ graphs on the dashboard.
+
+Configure Alerts:
+
+Go to Settings > Notifications to add emergency contacts and providers.
+
+Historical Analysis:
+
+Access Reports to review past data and anomaly logs.
 
 Contributing
-Contributions to enhance CardioGuard are welcome! To contribute:
-
-Fork the Repository:
-Click the "Fork" button on the GitHub repository page.
+Fork the Repository.
 
 Create a Feature Branch:
-   ```bash
-   git checkout -b feature/YourFeatureName
+
+bash
+Copy
+git checkout -b feature/amazing-feature
 Commit Your Changes:
-   ```bash
-   git commit -m "Add Your Feature Description"
-Push to Your Fork:
-   ```bash
-   git push origin feature/YourFeatureName
-Submit a Pull Request:
-Navigate to the original repository and click "New Pull Request."
+
+bash
+Copy
+git commit -m "Add amazing feature"
+Push to the Branch:
+
+bash
+Copy
+git push origin feature/amazing-feature
+Open a Pull Request.
 
 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+Distributed under the MIT License. See LICENSE for details.
 
 Acknowledgements
-Special thanks to the open-source community for providing the tools and libraries that made CardioGuard possible.
-Gratitude to our beta testers for their invaluable feedback and support.
+The AD8232 library maintainers.
 
-This markdown README file outlines your project's purpose, features, and instructions clearly, making it accessible for both users and contributors.
+Firebase and Supabase for backend services.
+
+Scikit-learn for ML tooling.
