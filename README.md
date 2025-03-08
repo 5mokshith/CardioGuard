@@ -3,10 +3,13 @@
 **CardioGuard** is an AI-powered cardiac arrest prediction and alert system designed to provide real-time monitoring and timely notifications to help prevent cardiac emergencies.
 
 ## Table of Contents
-
 - [Features](#features)
 - [System Architecture](#system-architecture)
 - [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Frontend Setup](#frontend-setup)
+  - [Hardware Setup](#hardware-setup-esp32)
+  - [Backend & ML Setup](#backend--ml-setup)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -53,107 +56,96 @@ CardioGuard is built on a multi-layered architecture:
    ```bash
    git clone https://github.com/your-username/CardioGuard.git
    cd CardioGuard/frontend
+   ```
 
+2. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
+3. **Configure Environment Variables:**
+   Create a `.env` file with your Firebase and Supabase credentials:
+   ```
+   VITE_FIREBASE_API_KEY=your_key
+   VITE_SUPABASE_URL=your_url
+   VITE_SUPABASE_KEY=your_key
+   ```
 
+4. **Start the Development Server:**
+   ```bash
+   npm run dev
+   ```
 
-   Install Dependencies:
+   Access the app at http://localhost:3000.
 
-bash
-Copy
-npm install
-Configure Environment Variables:
-Create a .env file with your Firebase and Supabase credentials:
+### Hardware Setup (ESP32)
 
-env
-Copy
-VITE_FIREBASE_API_KEY=your_key
-VITE_SUPABASE_URL=your_url
-VITE_SUPABASE_KEY=your_key
-Start the Development Server:
+1. **Upload Firmware:**
+   - Open `CardioGuard/firmware/sensor_module.ino` in Arduino IDE.
+   - Install required libraries (AD8232, ESP32 BLE).
+   - Set Wi-Fi credentials in the code.
+   - Upload to ESP32.
 
-bash
-Copy
-npm run dev
-Access the app at http://localhost:3000.
+### Backend & ML Setup
 
-Hardware Setup (ESP32)
-Upload Firmware:
+1. **Navigate to the Backend Directory:**
+   ```bash
+   cd ../backend
+   ```
 
-Open CardioGuard/firmware/sensor_module.ino in Arduino IDE.
+2. **Install Python Dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Install required libraries (AD8232, ESP32 BLE).
+3. **Train the ML Model:**
+   ```bash
+   python train_model.py
+   ```
 
-Set Wi-Fi credentials in the code.
+4. **Start the Server:**
+   ```bash
+   node server.js
+   ```
 
-Upload to ESP32.
+## Usage
 
-Backend & ML Setup
-Navigate to the Backend Directory:
+1. **Pair the Sensor Module:**
+   - Power on the ESP32 device.
+   - Open the CardioGuard PWA and navigate to Devices > Pair New Device.
 
-bash
-Copy
-cd ../backend
-Install Python Dependencies:
+2. **Monitor Real-Time Data:**
+   - View live ECG and SpO₂ graphs on the dashboard.
 
-bash
-Copy
-pip install -r requirements.txt
-Train the ML Model:
+3. **Configure Alerts:**
+   - Go to Settings > Notifications to add emergency contacts and providers.
 
-bash
-Copy
-python train_model.py
-Start the Server:
+4. **Historical Analysis:**
+   - Access Reports to review past data and anomaly logs.
 
-bash
-Copy
-node server.js
-Usage
-Pair the Sensor Module:
+## Contributing
 
-Power on the ESP32 device.
+1. Fork the Repository.
+2. Create a Feature Branch:
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. Commit Your Changes:
+   ```bash
+   git commit -m "Add amazing feature"
+   ```
+4. Push to the Branch:
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. Open a Pull Request.
 
-Open the CardioGuard PWA and navigate to Devices > Pair New Device.
+## License
 
-Monitor Real-Time Data:
-
-View live ECG and SpO₂ graphs on the dashboard.
-
-Configure Alerts:
-
-Go to Settings > Notifications to add emergency contacts and providers.
-
-Historical Analysis:
-
-Access Reports to review past data and anomaly logs.
-
-Contributing
-Fork the Repository.
-
-Create a Feature Branch:
-
-bash
-Copy
-git checkout -b feature/amazing-feature
-Commit Your Changes:
-
-bash
-Copy
-git commit -m "Add amazing feature"
-Push to the Branch:
-
-bash
-Copy
-git push origin feature/amazing-feature
-Open a Pull Request.
-
-License
 Distributed under the MIT License. See LICENSE for details.
 
-Acknowledgements
-The AD8232 library maintainers.
+## Acknowledgements
 
-Firebase and Supabase for backend services.
-
-Scikit-learn for ML tooling.
+- The AD8232 library maintainers.
+- Firebase and Supabase for backend services.
+- Scikit-learn for ML tooling.
