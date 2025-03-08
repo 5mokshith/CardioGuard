@@ -52,11 +52,11 @@ cd frontend
 Install Dependencies:
 
 Make sure you have Node.js installed, then run:
-```bash
-npm install
+   ```bash
+   npm install
 Start the Development Server:
-```bash
-npm run dev
+   ```bash
+   npm run dev
 The application will be available at http://localhost:3000.
 
 Usage
@@ -81,13 +81,13 @@ Click the "Fork" button on the GitHub repository page.
 Create a Feature Branch:
    ```bash
    git checkout -b feature/YourFeatureName
-   Commit Your Changes:
+Commit Your Changes:
    ```bash
    git commit -m "Add Your Feature Description"
-   Push to Your Fork:
+Push to Your Fork:
    ```bash
    git push origin feature/YourFeatureName
-   Submit a Pull Request:
+Submit a Pull Request:
 Navigate to the original repository and click "New Pull Request."
 
 License
