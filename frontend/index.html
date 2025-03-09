@@ -18,7 +18,7 @@
   <script type="module" src="src/scripts/utils.js" defer></script>
 </head>
 <body>
-  <!-- Add this right after opening <body> tag -->
+
 <div class="progress-container">
   <div class="progress-bar"></div>
   <div class="steps">
@@ -226,7 +226,7 @@
 
   <!-- 4. Emergency Information -->
   <template data-emergency-info="true">
-    <div class="emergency-relationship-info" style="margin-top: 1rem;">
+    <div class="emergency-relationship-info">
       <h1>Emergency contact</h1>
       <!-- First emergency contact block -->
       <div class="emergency-contact-block">
@@ -256,12 +256,10 @@
         <div class="emergency-items">
           <label for="emergency_email">Email (optional)</label>
           <div>
-            <input type="text" name="emergency_email" placeholder="Enter email (optional)" />
+            <input type="email" name="emergency_email" placeholder="Enter email " />
           </div>
         </div>
       </div>
-  
-      <!-- Container where new contacts will be appended -->
       <div id="additional-contacts"></div>
   
       <div class="input-group">
@@ -308,7 +306,7 @@
     });
     
     // Global toggle listener
-   /*  document.addEventListener("click", (e) => {
+    document.addEventListener("click", (e) => {
       const wrapper = e.target.closest(".wrapper");
       if (wrapper) {
         const toggleBox = wrapper.querySelector(".toggle-box");
@@ -339,7 +337,7 @@
         buttonBox.style.background = "#c0c0c0";
         buttonBox.setAttribute("data-active", "false");
       }
-    } */
+    } 
   </script>
 </body>
 </html>

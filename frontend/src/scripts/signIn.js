@@ -1,5 +1,6 @@
 import { userSignIn } from './auth.js';
 import { supabase } from './auth.js';
+import { hideLoadingAnimation, showLoadingAnimation } from './utils.js';
 
 const button = document.querySelector("#sign-in-btn");
 button.addEventListener('click', () => {

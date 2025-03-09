@@ -1,6 +1,6 @@
 "use strict";
 
-document.addEventListener("click", (e) => {
+/* document.addEventListener("click", (e) => {
   // Check if the clicked element is inside a .wrapper element
   const wrapper = e.target.closest(".wrapper");
   if (wrapper) {
@@ -17,6 +17,7 @@ document.addEventListener("click", (e) => {
 });
 
 function changeButtonState(event) {
+  console.log(event.currentTarget);
   const buttonBox = event.currentTarget;
   const btn = buttonBox.querySelector(".toggle-icon");
   if (!btn) return;
@@ -32,7 +33,7 @@ function changeButtonState(event) {
     buttonBox.style.background = "#c0c0c0";
     buttonBox.setAttribute("data-active", "false");
   }
-}
+} */
 
 
 // /* Function to add more emergency contacts */

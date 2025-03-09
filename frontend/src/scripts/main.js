@@ -1,7 +1,5 @@
 import { supabase } from './auth.js';
 import { displayMessage } from './utils.js';
-// Remove this import since loadAllUserData is defined in this file
-// import { loadAllUserData } from './sendUserData.js';
 import { initializeWebSocket, initializeCharts } from './webSocket.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
