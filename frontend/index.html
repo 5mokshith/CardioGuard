@@ -284,8 +284,9 @@
   </div>
 
   <!-- Global Script for Label Animations and Toggle Behavior -->
-  <script>
+  <script type="module">
     "use strict";
+    import {supabase} from "./src/scripts/auth.js";
     
     // Label animation on focus/blur
     document.querySelectorAll(".input-group input").forEach((input) => {
@@ -338,6 +339,8 @@
         buttonBox.setAttribute("data-active", "false");
       }
     } 
+    async function hello() {console.log(await supabase.auth.getSession());}
+    hello();
   </script>
 </body>
 </html>

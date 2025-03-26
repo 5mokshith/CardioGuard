@@ -73,3 +73,15 @@ export async function userSignIn(email, password) {
     window.location = "./dashboard.html"
     return data;
 }
+
+
+export async function signOutUser() {
+    let {error} = await supabase.auth.signOut();
+        if(error) {
+            displayMessage("There is a error signing out",true);
+        }
+        else {
+            displayMessage("Successfully signed out");
+            window.location.href = "../../index.html";
+        }
+}

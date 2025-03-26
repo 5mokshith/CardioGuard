@@ -1,4 +1,4 @@
-import { supabase } from './auth.js';
+import { supabase, signOutUser } from './auth.js';
 import { displayMessage } from './utils.js';
 import { initializeWebSocket, initializeCharts } from './webSocket.js';
 
@@ -521,4 +521,6 @@ function getCurrentLocation() {
   }
 }
 
+
+document.getElementById("go-back").addEventListener("click", () => signOutUser());
 export { loadAllUserData, initializeSupabase };
