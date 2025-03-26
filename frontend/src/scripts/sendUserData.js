@@ -5,7 +5,7 @@ import { supabase } from "./auth.js";
 
 async function insertUserData(userId, personalInfo, medicalInfo, lifestyleInfo, emergencyContacts) {
   try {
-    console.log("Final medicalInfo:", medicalInfo); // Debugging log
+    console.log("Final medicalInfo:", medicalInfo); 
 
     // Insert into Personal Info
     const { error: personalError } = await supabase

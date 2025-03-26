@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       const form = document.getElementById("sign-up-form");
       const formData = new FormData(form);
-      const email = formData.get("email");
+      const email = formData.get("email");  
       const password = formData.get("password");
       const username = formData.get("username");
 
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showLoadingAnimation();
         const session = await userSignIn(email, password);
         if (session) {
-          window.location.replace("src/markup/dashboard.html");
+          window.location.replace("./src/markup/dashboard.html");
         }
       } catch (error) {
         console.error("Sign in error:", error);
@@ -283,7 +283,7 @@ async function submitAllData() {
   );
   if (response.success) {
     displayMessage("All data successfully submitted!");
-    window.location.replace("src/markup/dashboard.html");
+    window.location.replace("./src/markup/dashboard.html");
   } else {
     displayMessage("Error: " + response.message, true);
   }
