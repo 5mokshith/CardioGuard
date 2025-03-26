@@ -65,7 +65,9 @@ body {
 .sidebar.open {
   right: 0;
 }
-
+.sidebar-header h2{
+  text-transform: capitalize;
+}
 .sidebar > .sidebar-header {
   display: flex;
   justify-content: space-between;
@@ -87,7 +89,9 @@ body {
 .sidebar-header > .close-sidebar:hover {
   transform: scale(1.1);
 }
-
+.sidebar-section h3{
+  text-transform: capitalize;
+}
 .sidebar > .sidebar-section {
   margin-bottom: 2rem;
   transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
@@ -124,6 +128,7 @@ body {
   justify-content: center;
   font-size: 2rem;
   margin: 0 auto 1rem;
+  padding: 1rem;
 }
 
 .sidebar-section.visible {
@@ -210,7 +215,6 @@ body {
   align-items: center;
   gap: 0.75rem;
 }
-
 .user-info {
   position: relative;
   cursor: pointer;
@@ -236,6 +240,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.user-info span{
+  text-transform: capitalize;
 }
 
 /* Dashboard Grid Styles */

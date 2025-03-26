@@ -1,27 +1,26 @@
-import { supabase, signOutUser } from './auth.js';
-import { displayMessage } from './utils.js';
-import { initializeWebSocket, initializeCharts } from './webSocket.js';
+import { supabase, signOutUser } from "./auth.js";
+import { displayMessage } from "./utils.js";
+import { initializeWebSocket, initializeCharts } from "./webSocket.js";
 
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const { data: sessionData, error } = await supabase.auth.getSession();
-        
-        if (error || !sessionData?.session) {
-            console.error('No active session');
-            window.location.href = '../../index.html';
-            return;
-        }
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const { data: sessionData, error } = await supabase.auth.getSession();
 
-        await loadAllUserData(sessionData.session.user.id);
-        
-        // Initialize charts and WebSocket connection
-        initializeCharts();
-        initializeWebSocket();
-
-    } catch (error) {
-        displayMessage('Error initializing application', true);
-        console.error('Error initializing application:', error);
+    if (error || !sessionData?.session) {
+      console.error("No active session");
+      window.location.href = "../../index.html";
+      return;
     }
+
+    await loadAllUserData(sessionData.session.user.id);
+
+    // Initialize charts and WebSocket connection
+    initializeCharts();
+    initializeWebSocket();
+  } catch (error) {
+    displayMessage("Error initializing application", true);
+    console.error("Error initializing application:", error);
+  }
 });
 
 function initializeSupabase() {
@@ -459,30 +458,32 @@ window.addEventListener("resize", function () {
 
 // Add these functions to handle location display
 async function updateLocationDisplay(latitude, longitude) {
-  const locationDisplay = document.getElementById('locationDisplay');
-  const loadingStatus = locationDisplay.querySelector('.loading-status');
-  
+  const locationDisplay = document.getElementById("locationDisplay");
+  const loadingStatus = locationDisplay.querySelector(".loading-status");
+
   try {
-      // Reverse geocoding using OpenStreetMap Nominatim API
-      const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-      );
-      const data = await response.json();
-      
-      // Update the location display
-      loadingStatus.innerHTML = `
+    // Reverse geocoding using OpenStreetMap Nominatim API
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+    );
+    const data = await response.json();
+
+    // Update the location display
+    loadingStatus.innerHTML = `
           <div class="location-details">
               <p><strong>Address:</strong> ${data.display_name}</p>
-              <p><strong>Coordinates:</strong> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}</p>
+              <p><strong>Coordinates:</strong> ${latitude.toFixed(
+                6
+              )}, ${longitude.toFixed(6)}</p>
           </div>
           <span class="status normal">Location Updated</span>
       `;
-      
-      console.log('Address data:', data);
-      return data;
+
+    console.log("Address data:", data);
+    return data;
   } catch (error) {
-      console.error('Error getting location details:', error);
-      loadingStatus.innerHTML = `
+    console.error("Error getting location details:", error);
+    loadingStatus.innerHTML = `
           <span class="status warning">Error fetching location details</span>
       `;
   }
@@ -490,37 +491,38 @@ async function updateLocationDisplay(latitude, longitude) {
 
 // Function to get current location
 function getCurrentLocation() {
-  const locationDisplay = document.getElementById('locationDisplay');
-  const loadingStatus = locationDisplay.querySelector('.loading-status');
-  
+  const locationDisplay = document.getElementById("locationDisplay");
+  const loadingStatus = locationDisplay.querySelector(".loading-status");
+
   if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-          async (position) => {
-              const { latitude, longitude } = position.coords;
-              console.log('Location:', latitude, longitude);
-              console.log('Accuracy:', position.coords.accuracy, 'meters');
-              
-              await updateLocationDisplay(latitude, longitude);
-          },
-          (error) => {
-              console.error('Error getting location:', error);
-              loadingStatus.innerHTML = `
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log("Location:", latitude, longitude);
+        console.log("Accuracy:", position.coords.accuracy, "meters");
+
+        await updateLocationDisplay(latitude, longitude);
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        loadingStatus.innerHTML = `
                   <span class="status warning">Error getting location: ${error.message}</span>
               `;
-          },
-          {
-              enableHighAccuracy: true,
-              timeout: 5000,
-              maximumAge: 0
-          }
-      );
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      }
+    );
   } else {
-      loadingStatus.innerHTML = `
+    loadingStatus.innerHTML = `
           <span class="status warning">Geolocation not supported</span>
       `;
   }
 }
 
-
-document.getElementById("go-back").addEventListener("click", () => signOutUser());
+document
+  .getElementById("go-back")
+  .addEventListener("click", () => signOutUser());
 export { loadAllUserData, initializeSupabase };
