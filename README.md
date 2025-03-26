@@ -1,4 +1,4 @@
-# CardioGuard
+# CardioGuard- A cardiac arrest prediction and alert system  
 
 **CardioGuard** is an AI-powered cardiac arrest prediction and alert system designed to provide real-time monitoring and timely notifications to help prevent cardiac emergencies.
 
