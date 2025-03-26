@@ -32,6 +32,14 @@ async function say() {
 }
 
 async function getDoctorContact(userId) {
+  // Use cached emergency contacts if available
+  if (cache.emergencyContacts) {
+    const doctorContact = cache.emergencyContacts.find(
+      (contact) => contact.relationship === "Doctor"
+    );
+    return doctorContact ? doctorContact.phone : null;
+  }
+
   try {
     const { data: contacts, error } = await supabase
       .from("emergency_contacts")
@@ -41,19 +49,10 @@ async function getDoctorContact(userId) {
 
     if (error) throw error;
 
-    // If no specific doctor found, get the first emergency contact
-    if (!contacts || contacts.length === 0) {
-      const { data: allContacts, error: allError } = await supabase
-        .from("emergency_contacts")
-        .select("*")
-        .eq("user_id", userId)
-        .limit(1);
+    // Update cache
+    cache.emergencyContacts = contacts;
 
-      if (allError) throw allError;
-      return allContacts?.[0]?.phone;
-    }
-
-    return contacts[0].phone;
+    return contacts.length > 0 ? contacts[0].phone : null;
   } catch (error) {
     displayMessage("Error fetching doctor contact", true);
     console.error("Error fetching doctor contact:", error);
@@ -61,14 +60,49 @@ async function getDoctorContact(userId) {
   }
 }
 
+// Global cache object
+const cache = {
+  user: null,
+  personalInfo: null,
+  medicalInfo: null,
+  lifestyle: null,
+  emergencyContacts: null,
+  lastFetched: null, // Timestamp for cache expiration
+};
+
 async function loadAllUserData(user_id) {
+  const cacheExpirationTime = 5 * 60 * 1000; // 5 minutes in milliseconds
+  const now = Date.now();
+
+  // Check if data is cached and not expired
+  if (
+    cache.lastFetched &&
+    now - cache.lastFetched < cacheExpirationTime &&
+    cache.user &&
+    cache.personalInfo &&
+    cache.medicalInfo &&
+    cache.lifestyle &&
+    cache.emergencyContacts
+  ) {
+    console.log("Using cached data");
+    updateProfileHeaders(cache.user.name);
+    updatePersonalInfo(cache.user, cache.personalInfo);
+    updateMedicalInfo(cache.medicalInfo);
+    updateLifestyleInfo(cache.lifestyle);
+    updateEmergencyContacts(cache.emergencyContacts);
+    return;
+  }
+
   try {
+    console.log("Fetching data from database");
+
+    // Batch database calls
     const [
-      { data: user },
-      { data: personalInfo },
-      { data: medicalInfo },
-      { data: lifestyle },
-      { data: emergencyContactsData },
+      { data: user, error: userError },
+      { data: personalInfo, error: personalInfoError },
+      { data: medicalInfo, error: medicalInfoError },
+      { data: lifestyle, error: lifestyleError },
+      { data: emergencyContacts, error: emergencyContactsError },
     ] = await Promise.all([
       supabase.from("users").select("*").eq("id", user_id).single(),
       supabase
@@ -81,24 +115,31 @@ async function loadAllUserData(user_id) {
       supabase.from("emergency_contacts").select("*").eq("user_id", user_id),
     ]);
 
+    // Handle errors
     if (
-      !user ||
-      !personalInfo ||
-      !medicalInfo ||
-      !lifestyle ||
-      !Array.isArray(emergencyContactsData)
+      userError ||
+      personalInfoError ||
+      medicalInfoError ||
+      lifestyleError ||
+      emergencyContactsError
     ) {
-      displayMessage("Error fetching user data", true);
-      throw new Error(
-        "Could not fetch user data or emergencyContacts is not an array"
-      );
+      throw new Error("Error fetching user data");
     }
 
+    // Update cache
+    cache.user = user;
+    cache.personalInfo = personalInfo;
+    cache.medicalInfo = medicalInfo;
+    cache.lifestyle = lifestyle;
+    cache.emergencyContacts = emergencyContacts;
+    cache.lastFetched = now;
+
+    // Update UI
     updateProfileHeaders(user.name);
     updatePersonalInfo(user, personalInfo);
     updateMedicalInfo(medicalInfo);
     updateLifestyleInfo(lifestyle);
-    updateEmergencyContacts(emergencyContactsData);
+    updateEmergencyContacts(emergencyContacts);
   } catch (error) {
     displayMessage("Error loading user data", true);
     console.error("Error in loadAllUserData:", error);
@@ -434,8 +475,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   getCurrentLocation();
-  // Update location every 5 minutes
-  setInterval(getCurrentLocation, 300000);
+ 
+  setInterval(debouncedGetCurrentLocation, 30000);
 });
 
 // Handle window resize events for chart responsiveness
@@ -521,6 +562,17 @@ function getCurrentLocation() {
       `;
   }
 }
+
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
+// Example: Debounce location updates
+const debouncedGetCurrentLocation = debounce(getCurrentLocation, 5000);
 
 document
   .getElementById("go-back")
