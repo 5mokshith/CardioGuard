@@ -70,7 +70,6 @@ export async function userSignIn(email, password) {
     displayMessage("User signed in successfully");
     console.log('User signed in:', data.user);
     hideLoadingAnimation();
-    window.location = "./dashboard.html"
     return data;
 }
 
