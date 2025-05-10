@@ -1,2 +1,0 @@
-#288ff0
-rgb(222 105 40) // some color for gradient borders
