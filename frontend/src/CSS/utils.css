@@ -1,0 +1,190 @@
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.tooltip:hover::before {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.toggle-box {
+    margin-right: 10px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 20px;
+    background: #c0c0c0;
+    /* #EFEFEF */
+    border-radius: 10px;
+    transition: all 0.2s;
+    bottom: -5px;
+  }
+  
+  .toggle-box i {
+    width: 15px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    left: 15%;
+    transition: all 0.2s ease;
+  }
+  .message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+    z-index: 1000;
+    color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    background-color: #4caf4fe1;
+    width: 15rem;
+    min-width: fit-content;
+    height: 3rem;
+  }
+  .loader {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  .loader .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+/* progress bar styles */
+.progress-container {
+  position: relative;
+  width: 80%;
+  margin: 1rem auto;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+}
+
+.progress-bar {
+  position: absolute;
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.5s ease;
+  border-radius: 2px;
+}
+
+.steps {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  top: -14px;
+}
+
+.step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.step.active {
+  background-color: #4CAF50;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+  /* Transistion */
+
+/* Fade-out effect for main container */
+.fade-out {
+  animation: fadeOut 500ms ease-in-out forwards;
+}
+
+/* Fade-in effect for the new step */
+.fade-in {
+  animation: fadeIn 500ms ease-in-out forwards;
+}
+
+/* Input error styling */
+.input-error {
+  border: 2px solid #ff4d4d;
+  box-shadow: 0 0 8px rgba(255, 77, 77, 0.7);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Smooth fade-out with scaling */
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+  }
+  to {
+      opacity: 0;
+      transform: scale(0.8) translateY(-20px);
+  }
+}
+
+/* Smooth fade-in with gentle scaling */
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+      transform: scale(0.85) translateY(30px);
+      filter: blur(5px);
+  }
+  100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      filter: blur(0);
+  }
+}
+

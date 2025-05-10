@@ -1,0 +1,544 @@
+body { 
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1)), url(/sign-in.jpg);
+    background-size: cover;
+    backdrop-filter: blur(6px);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: all 200ms ease;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.138);
+    min-height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);    
+}
+
+.container > form {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 1.8rem;
+}
+
+.container > form > h2 {
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    margin-inline-start: 50%;
+    margin-block-end: 2rem;
+    transform: translateX(-50%);
+}
+
+.container > form > .input-group {
+    position: relative;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.632);
+    transform: translateY(-0.5rem);
+}
+
+.container > form > .input-group > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1rem;
+    pointer-events: none;
+    color: white;
+    transform: translateY(0.6rem);
+    transition: all 0.3s ease-in-out;
+}
+
+.container input,
+.container-personal-info input {
+    all: unset;
+    color: rgb(238, 235, 235);
+    padding: 0.5rem;
+    height: 2.5rem;
+    width: 100%;
+    min-width: 22rem;
+    font-size: 1.35rem;
+    border-bottom: 3px solid white;
+    background: transparent;
+    outline: none;
+}
+
+main .container form button {
+    background: white;
+    border: none;
+    outline: none;
+    height: 2.6rem;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+    transition: all 100ms ease-in-out;
+}
+
+main .container form button:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.9);
+}
+main .container form button:active {
+    background: white;
+    transform: scale(0.98);
+}
+
+main .container form p {
+    text-align: center;
+    color: white;
+}
+
+main .container form p > a {
+    margin-inline-start: 0.5rem;
+    color: rgb(58, 94, 255);
+    text-decoration: none;
+}
+
+main .container form p > a:hover {
+    color: rgb(181, 181, 254);
+    text-decoration: none;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    background-color: transparent !important; /* Ensures background stays transparent */
+    color: black !important; /* Ensures text remains visible */
+    transition: background-color 5000s ease-in-out 0s !important; /* Prevent sudden autofill color flash */
+}
+
+/* Hey buddy, don't change the styles from up add new styles to bottom */
+
+.container-personal-info {
+    width: fit-content;
+    height: fit-content;
+    min-height: 26rem;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--card-foreground-main);
+    position: relative;
+}
+body {
+    /* background: var(--card-bg); */
+    color: black;
+}
+.container-personal-info input {
+    width: 100%;
+    min-width: 22rem;
+    font-size: 1.35rem;
+    border-bottom: 3px solid black;
+    background: transparent;
+    outline: none;
+    color: black;
+}
+
+.container-personal-info > h2 {
+    position: absolute;
+}
+.container-personal-info > label {
+    color: black;
+    font-size: 1.2rem;
+    margin: 0.5rem;
+}
+.container-personal-info > .left,
+.container-personal-info > .right {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 1rem;
+    margin-block-start: 3rem;
+}
+
+.container-personal-info .input-group {
+    margin: 0.8rem;
+}
+
+.container-personal-info > .left select,
+.container-personal-info > .right select {
+    height: 3.5rem;
+    width: 100%;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    background-color: var(--card-bg-main);
+    border: none;
+    border-radius: 1rem;
+}
+
+.container-personal-info .buttons {
+    margin-block-start: 25rem;
+}
+
+.container-personal-info .buttons,
+.container-medical-info .buttons,
+.container-lifestyle-info .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1rem;
+    left: 90%;
+    bottom: 1rem;
+}
+
+.container-personal-info .buttons button,
+.container-medical-info .buttons button,
+.container-lifestyle-info .buttons button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: black;
+    border: none;
+    outline: none;
+    height: 2.6rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    transition: all 100ms ease-in-out;
+}
+
+.container-personal-info .buttons button > svg,
+.container-medical-info .buttons button > svg {
+    margin-inline-end: 0.5rem;
+}
+
+.container-personal-info .buttons button:hover,
+.container-medical-info .buttons button:hover,
+.container-lifestyle-info .buttons button:hover {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.container-personal-info .buttons button:active,
+.container-medical-info .buttons button:active,
+.container-lifestyle-info .buttons button:active {
+    cursor: pointer;
+    transform: scale(0.88);
+}
+
+/* Avinash styling */
+.container-medical-info,
+.container-lifestyle-info {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    min-height: 10rem;
+    min-width: 30rem;
+    width: fit-content;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--card-foreground-main);
+    position: relative;
+}
+
+.container-medical-info input {
+    width: 1.1rem;
+    height: 1.1rem;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+}
+
+.container-medical-info .content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Three columns */
+    gap: 5.5rem;
+}
+
+.container-medical-info .input-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.6rem;
+}
+
+.container-medical-info .input-group label {
+    text-align: left;
+    font-size: 1.2rem;
+    color: black;
+}
+
+.container-medical-info .buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: black;
+    border: none;
+    outline: none;
+    height: 2.6rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    transition: all 100ms ease-in-out;
+}
+
+.container-medical-info > .others> label {
+    font-size: 1.2rem;
+    margin: 0.5rem;
+}
+
+.container-medical-info > .others >{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.container-medical-info > .others > textarea{
+    width: 100%;
+    resize: none;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+/* Styles for lifestyle section */
+.container-lifestyle-info .wrapper {
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.container-lifestyle-info .wrapper:hover {
+    border: none;
+    border-color: black;
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.container-lifestyle-info .wrapper:active {
+    border-color: black;
+    background-color: rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease-in-out;
+}
+.container-lifestyle-info .input-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.6rem;
+}
+
+/* Emergency info */
+
+.emergency-relationship-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--card-foreground-main);
+    position: relative;
+    width: fit-content;
+ /*    max-height: fit-content; */
+ height: 35rem;
+    overflow-y: auto;
+}
+/* Custom scrollbar styles */
+.emergency-relationship-info::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.emergency-relationship-info::-webkit-scrollbar-track {
+    background: transparent; /* Background of the scrollbar track */
+    margin-block: 10px;
+    margin-right: 2px; /* Margin to the right */
+}
+
+.emergency-relationship-info::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 2px solid transparent; /* Space around the thumb */
+    background-clip: content-box; /* Clip the background */
+}
+
+.emergency-relationship-info::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Darker color on hover */
+}
+  
+  .emergency-relationship-info .emergency-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background: transparent;
+    padding: 0.5rem;
+    width: 32rem;
+    border-radius: 0.5rem;
+  }
+  
+  .emergency-relationship-info .emergency-items label {
+    font-size: 1.2rem;
+    text-align: left;
+    color: black;
+  }
+  
+  .emergency-relationship-info .emergency-items div {
+    display: flex;
+    align-items: center; 
+    gap: 1rem;
+    padding-left: 0.8rem; 
+    border: 0.2rem solid #ccc;
+  }
+  
+  .emergency-relationship-info .emergency-items svg {
+    width: 1.3rem;
+    height: 1.3rem;
+    fill: black;
+  }
+  
+  .emergency-relationship-info .emergency-items input,
+  .emergency-relationship-info .emergency-items select {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+  
+  .emergency-relationship-info .emergency-items input::placeholder {
+    color: #999;
+  }
+  
+  .emergency-relationship-info .emergency-items select {
+    cursor: pointer;
+  }
+  
+  .emergency-relationship-info .emergency-items select option {
+    color: black;
+    background: white;
+  }
+
+  .emergency-relationship-info > .input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .emergency-relationship-info > .input-group button {
+    width: 90%;
+    height: 2.5rem;
+    font-size: 1.2rem;
+    color: rgb(62, 62, 216);
+    background-color: transparent;
+    border: 2px dashed rgb(62, 62, 216);
+    transition: all 200ms ease;
+  }
+  .emergency-relationship-info > .input-group button:hover {
+    color: blue;
+    cursor: pointer;
+}
+
+.emergency-relationship-info > .input-group button:active {
+    color: rgb(62, 62, 216);
+    transform: scale(0.98);
+}
+
+.emergency-relationship-info .buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.emergency-relationship-info .buttons button {
+    background: white;
+    border: none;
+    outline: none;
+    height: 2.6rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 100ms ease-in-out;
+}
+
+.emergency-relationship-info .buttons button[type="submit"] {
+    background-color: green;
+    color: white;
+}
+.emergency-relationship-info .buttons button[type="submit"]:hover {
+    background-color: darkgreen;
+}
+
+.emergency-relationship-info .buttons button[type="submit"]:active {
+    background-color: green;
+    transform: scale(0.98);
+}
+.emergency-relationship-info .buttons button:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.emergency-relationship-info .buttons button:active {
+    background: white;
+    transform: scale(0.98);
+}
+
+/* Loading Spinner */
+.spinner-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Add this class to show the spinner */
+.spinner-overlay.active {
+  display: flex;
+}
+
+/* Button disabled state styles */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transition: opacity 0.3s ease;
+}
