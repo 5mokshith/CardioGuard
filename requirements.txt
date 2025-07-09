@@ -1,0 +1,14 @@
+numpy
+pandas
+matplotlib
+scipy
+scikit-learn
+wfdb
+tensorflow
+PyWavelets
+requests
+joblib
+ipykernel
+
+imbalanced-learn>=0.10.1
+pytest>=7.0.0
